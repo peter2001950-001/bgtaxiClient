@@ -2,7 +2,9 @@
 
 app.callTaxi = kendo.observable({
     onShow: function () {
-       
+       if(localStorage.getItem("bgTaxiAuth_authData_homeView") != undefined || app["bgTaxiAuth_authData_homeView"] != undefined){
+     app.mobileApp.navigate('components/callTaxi/view.html');
+       }
     },
     afterShow: function () { },
     
@@ -34,7 +36,7 @@ function clicked() {
                 alert(status.status);
                 if (status.status == "OK") {
                     var requestId = status.requestId;
-                    alertMessage("Заявката беше изпратена успешно! Моля, изчайте нейното приемане", "Изпратена", "warning");
+                    alertMessage("Заявката беше изпратена успешно! Моля, изчайте нейното приемане", "Изпратена!", "warning");
                     var timer = setInterval(function () {
                         $.ajax({
                             url: "http://peter200195-001-site1.btempurl.com/request/requestStatus?requestID=" + requestId + "&basicAuth=" + hash,
