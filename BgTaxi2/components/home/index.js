@@ -1,7 +1,10 @@
 'use strict';
 
 app.home = kendo.observable({
-    onShow: function () { },
+    onShow: function () {// document.getElementById("appDrawer").style.visibility = "hidden";
+  //  document.getElementById("appDrawer").removeAttribute("data-role");
+    document.getElementById("progressBar").style.visibility = "hidden";
+     },
     afterShow: function () { }
 });
 
@@ -108,6 +111,8 @@ app.home = kendo.observable({
                 return true;
             },
             signin: function () {
+                document.getElementById("progressBar").style.visibility = "visibile";
+                document.getElementById("progressBar").style.width = "20%";
                 var model = homeModel,
                     email = model.email.toLowerCase(),
                     password = model.password;
@@ -123,7 +128,7 @@ app.home = kendo.observable({
                     contentType: "application/json",
                     success: function (status) {
                         if (status.status == "OK") {
-                            alert("success");
+                document.getElementById("progressBar").style.width = "100%";
                             var rememberedData = {
                                 email: email,
                                 password: password,
@@ -142,6 +147,8 @@ app.home = kendo.observable({
                 });
             },
             register: function () {
+                 document.getElementById("progressBar").style.visibility = "visibile";
+                document.getElementById("progressBar").style.width = "20%";
                 var model = homeModel,
                     email = model.email.toLowerCase(),
                     password = model.password,

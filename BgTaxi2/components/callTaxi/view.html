@@ -1,7 +1,12 @@
-<div data-role="view" data-title="CallTaxi View" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow" data-after-show="app.callTaxi.afterShow" id="callTaxiScreen" class="screen">
-
+<div data-role="view" data-title="CallTaxi View" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow"
+    data-after-show="app.callTaxi.afterShow" id="callTaxiScreen" class="screen">
+    <script src="kendo/js/jquery.min.js"></script>
+    <div style="width: 170px; margin: 30px auto;"> 
+        <button id = "callTBtn" type="button" style="width:100%; height: 170px; border-radius:50%; font-size: 25px; background-color:#f0ad4e; color:white;" data-role="button" data-bind="events: { click: callTaxi }" class="btn btn-warning btn-lg" >Поръчайте<br>такси</button>  
+    </div>
+    <h1 id="messageBox">Click</h1>
+    
     <!-- START_CUSTOM_CODE_callTaxi -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
     <!-- END_CUSTOM_CODE_callTaxi -->
 </div>
