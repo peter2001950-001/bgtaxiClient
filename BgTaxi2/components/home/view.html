@@ -1,4 +1,4 @@
-<div data-role="view" data-title="Home View" data-layout="main-nonav" data-model="app.home" data-show="app.home.onShow" data-after-show="app.home.afterShow" id="homeScreen" class="screen">
+<div data-role="view" data-title="Вход" data-layout="main-nonav" data-model="app.home" data-show="app.home.onShow" data-after-show="app.home.afterShow" id="homeScreen" class="screen">
     <div class="signin-view screen__content screen__content--signin">
         <form>
             <ul data-role="listview" data-style="inset">
@@ -51,14 +51,6 @@
             <span class="status" data-bind="text: homeModel.errorMessage"></span>
         </form>
     </div>
-    <div id="progressBar">
-  <h3>Зареждане...</h3>
-  <div class="progress">
-    <div class="progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
-      <span class="sr-only">70% Complete</span>
-    </div>
-  </div>
-</div>
     <div class="offline" align="center" style="display:none;">
         You are currently offline. Before using this app in offline mode you must initialize it while you are online
     </div>
