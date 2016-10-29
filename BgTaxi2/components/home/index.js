@@ -1,20 +1,18 @@
 'use strict';
 
 app.home = kendo.observable({
-    onShow: function() {},
-    afterShow: function() {}
+    onShow: function () {
+     },
+    afterShow: function () { }
 });
 
-// START_CUSTOM_CODE_home
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
-
-// END_CUSTOM_CODE_home
-(function(parent) {
+(function (parent) {
     var provider = app.data.bgTaxi2,
         mode = 'signin',
         registerRedirect = 'callTaxi',
         signinRedirect = 'callTaxi',
-        init = function(error, result) {
+        rememberKey = 'bgTaxiAuth_authData_homeView',
+        init = function (error, result) {
             $('.status').text('');
 
             if (error) {
@@ -48,9 +46,9 @@ app.home = kendo.observable({
             }
 
         },
-        successHandler = function(data) {
+        successHandler = function (data) {
             var redirect = mode === 'signin' ? signinRedirect : registerRedirect,
-                model = parent.homeModel || {},
+                model = data,
                 logout = model.logout;
 
             if (logout) {
@@ -61,9 +59,20 @@ app.home = kendo.observable({
                     provider.Users.logout(init, init);
                     return;
                 }
+                var rememberedData = {
+                    email: model.email,
+                    password: model.password
+                };
+                if (model.rememberme && rememberedData.email && rememberedData.password) {
+                    if (localStorage) {
+                        localStorage.setItem(rememberKey, JSON.stringify(rememberedData));
+                    } else {
+                        app[rememberKey] = rememberedData;
+                    }
+                }
                 app.user = data.result;
 
-                setTimeout(function() {
+                setTimeout(function () {
                     app.mobileApp.navigate('components/' + redirect + '/view.html');
                 }, 0);
             } else {
@@ -75,7 +84,7 @@ app.home = kendo.observable({
             email: '',
             password: '',
             errorMessage: '',
-            validateData: function(data) {
+            validateData: function (data) {
                 var model = homeModel;
 
                 if (!data.email && !data.password) {
@@ -95,7 +104,8 @@ app.home = kendo.observable({
 
                 return true;
             },
-            signin: function() {
+            signin: function () {
+               
                 var model = homeModel,
                     email = model.email.toLowerCase(),
                     password = model.password;
@@ -104,10 +114,32 @@ app.home = kendo.observable({
                     return false;
                 }
 
-                provider.Users.login(email, password, successHandler, init);
-
+                $.ajax({
+                    url: "http://peter200195-001-site1.btempurl.com/Account/LoginExternal?email=" + email + "&password=" + password,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (status) {
+                        if (status.status == "OK") {
+                
+                            var rememberedData = {
+                                email: email,
+                                password: password,
+                                result: email,
+                                rememberme: true
+                            };
+                            successHandler(rememberedData);
+                        } else {
+                            init();
+                        }
+                    },
+                    error: function () {
+                        $("#messageBox").html("Error");
+                        alert("error comunicating with serveer");
+                    }
+                });
             },
-            register: function() {
+            register: function () {
                 var model = homeModel,
                     email = model.email.toLowerCase(),
                     password = model.password,
@@ -120,11 +152,33 @@ app.home = kendo.observable({
                 if (!model.validateData(model)) {
                     return false;
                 }
+                    $.ajax({
+                    url: "http://peter200195-001-site1.btempurl.com/Account/RegisterExternal?email=" + email + "&password=" + password,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (status) {
+                        if (status.status == "OK") {
+                            alert("success");
+                            var rememberedData = {
+                                email: email,
+                                password: password,
+                                result: displayName,
+                                rememberme: true
+                            };
+                            successHandler(rememberedData);
+                        } else {
+                            init();
+                        }
+                    },
+                    error: function () {
+                        $("#messageBox").html("Error");
+                        alert("error comunicating with serveer");
+                    }
+               
 
-                provider.Users.register(email, password, attrs, successHandler, init);
-
-            },
-            toggleView: function() {
+            })},
+            toggleView: function () {
                 var model = homeModel;
                 model.set('errorMessage', '');
 
@@ -135,7 +189,7 @@ app.home = kendo.observable({
         });
 
     parent.set('homeModel', homeModel);
-    parent.set('afterShow', function(e) {
+    parent.set('afterShow', function (e) {
         if (e && e.view && e.view.params && e.view.params.logout) {
             homeModel.set('logout', true);
         }

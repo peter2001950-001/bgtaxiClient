@@ -26,23 +26,16 @@
           "signinRedirect": "callTaxi"
         }
       ],
-      "title": "Вход",
+      "title": "Home View",
       "addToNavigation": false
     },
     {
       "type": "kendo-ui-mobile:view",
       "name": "callTaxi",
       "components": [],
-      "title": "Таксита",
+      "title": "CallTaxi View",
       "addToNavigation": true,
       "icon": "home"
-    },
-    {
-      "type": "kendo-ui-mobile:view",
-      "name": "logoutView",
-      "components": [],
-      "title": "Излизане",
-      "addToNavigation": false
     }
   ],
   "dataProviders": [

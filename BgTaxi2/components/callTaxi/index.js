@@ -2,8 +2,7 @@
 
 app.callTaxi = kendo.observable({
     onShow: function () {
-        document.getElementById("appDrawer").style.visibility = "visible";
-        document.getElementById("progressBar").style.visibility = "hidden";
+       
     },
     afterShow: function () { },
     
@@ -25,7 +24,7 @@ function clicked() {
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
 
     function geoSuccess(position) {
-
+            var positionCou = position.coords;
         $.ajax({
             url: "http://peter200195-001-site1.btempurl.com/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + hash,
             type: "POST",
