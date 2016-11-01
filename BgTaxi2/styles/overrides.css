@@ -470,8 +470,8 @@
 /*Custom overrides*/
 /*Primary button*/
 .km-nova .button-group .km-button.primary {
-  background-color: #ff4350;
-  border-color: #ff4350;
+  background-color: #fea400;
+  border-color: #fea400;
   color: #fff;
 }
 .km-nova .button-group .km-button.primary.km-state-active {

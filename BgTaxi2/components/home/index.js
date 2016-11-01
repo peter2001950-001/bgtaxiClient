@@ -1,7 +1,9 @@
 'use strict';
 
 app.home = kendo.observable({
-    onShow: function () {
+    onShow: function () {if(localStorage.getItem("bgTaxiAuth_authData_homeView") != undefined || app["bgTaxiAuth_authData_homeView"] != undefined){
+     app.mobileApp.navigate('components/callTaxi/view.html');
+       }
      },
     afterShow: function () { }
 });

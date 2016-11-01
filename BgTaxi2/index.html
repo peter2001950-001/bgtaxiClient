@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <link href="bower_components/leaflet/dist/leaflet.css" rel="stylesheet">
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width">
@@ -10,8 +12,12 @@
     <link href="styles/overrides.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet">
 
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
+
+    <script src="moment.js"></script>
+    <script src="bootstrap.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="app.js"></script>
     <script src="bower_components/everlive/min/everlive.all.min.js"></script>
@@ -19,6 +25,7 @@
 </head>
 
 <body id="kendoUiMobileApp">
+    <script src="components/mapView/index.js"></script>
     <script src="components/callTaxi/index.js"></script>
     <script src="components/home/index.js"></script>
     <div data-role="layout" data-id="main">
@@ -38,16 +45,16 @@
         </header>
     </div>
 
-    <div id="appDrawer" data-role="drawer" data-title="Navigation">
+    <div id="appDrawer" data-role="drawer" data-title="Навигация">
         <header data-role="header">
             <div data-role="navbar">
                 <span data-role="view-title"></span>
             </div>
         </header>
-        <ul id="navigation-container" data-role="listview">
+        <ul id="navigation-container" data-role="listview"  >
 
-            <li><a href="components/callTaxi/view.html" data-icon="home">CallTaxi View</a></li>
-            <li id="homeModellogout"><a  onclick="logoutBtn()" data-position="end" data-icon="action">Sign Out</a></li>
+            <li><a href="components/callTaxi/view.html" data-icon="home">Заявки</a></li>
+            <li id="homeModellogout"><a onclick="logoutBtn()" data-position="end" data-icon="action">Изход</a></li>
         </ul>
     </div>
     <!--  start index html save -->
