@@ -4,7 +4,7 @@ app.callTaxi = kendo.observable({
     onShow: function () {
         if (getFromLocalStorage("currentRequestId") != undefined) {
             var requestId = getFromLocalStorage("currentRequestId");
-            var hash = getFromLocalStorage("currentRequestHash");
+            var hash = getFromLocalStorage("basicAuth");
             alertMessage(getFromLocalStorage("currentRequestStatus"), "Изпратена!", "warning");
             document.getElementById("callTBtn").classList.add("disabled");
             var timer = setInterval(function () {
@@ -42,16 +42,14 @@ function clicked() {
         width: "30%"
     }, 300);
 
-    var rememberKey = 'bgTaxiAuth_authData_homeView',
+    var rememberKey = 'basicAuth',
         auth = "";
     if (localStorage) {
         auth = localStorage.getItem(rememberKey);
     } else {
         auth = app[rememberKey];
     }
-    var userAndPass = JSON.parse(auth);
-    var tok = userAndPass.email + ':' + userAndPass.password;
-    var hash = btoa(tok);
+    
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, { timeout: 45000 });
 
     function geoSuccess(position) {
@@ -61,7 +59,7 @@ function clicked() {
         }, 500);
         var positionCou = position.coords;
         $.ajax({
-            url: "http://peter200195-001-site1.btempurl.com/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + hash,
+            url: "http://peter200195-001-site1.btempurl.com/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + auth,
             type: "POST",
             dataType: "json",
             contentType: "application/json",

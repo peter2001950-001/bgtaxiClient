@@ -3,24 +3,25 @@
   "ProjectGuid": "c847860e-16e1-4775-82a2-ec28cc1ff61c",
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.BgTaxi2",
-  "DisplayName": "BgTaxi2",
-  "Author": "",
-  "Description": "BgTaxi2",
+  "DisplayName": "BgTaxiClient",
+  "Author": "Petar Bechev",
+  "Description": "BgTaxiClient used mainly for calling taxies",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
     "2"
   ],
-  "iOSBackgroundMode": [],
+  "iOSBackgroundMode": [
+    "location"
+  ],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
   "FrameworkVersion": "4.0.0",
   "AndroidPermissions": [
     "android.permission.INTERNET"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "true",
   "iOSStatusBarStyle": "Default",

@@ -1,7 +1,7 @@
 'use strict';
 
 app.home = kendo.observable({
-    onShow: function () {if(localStorage.getItem("bgTaxiAuth_authData_homeView") != undefined || app["bgTaxiAuth_authData_homeView"] != undefined){
+    onShow: function () {if(localStorage.getItem("basicAuth") != undefined || app["basicAuth"] != undefined){
      app.mobileApp.navigate('components/callTaxi/view.html');
        }
      },
@@ -61,6 +61,10 @@ app.home = kendo.observable({
                     provider.Users.logout(init, init);
                     return;
                 }
+
+                var tok = model.email + ':' + model.password;
+                var hash = btoa(tok);
+                localStorage.setItem("basicAuth", hash);
                 var rememberedData = {
                     email: model.email,
                     password: model.password
@@ -103,6 +107,10 @@ app.home = kendo.observable({
                     model.set('errorMessage', 'Missing password.');
                     return false;
                 }
+                if (data.password.length <6) {
+                    model.set('errorMessage', 'Missing password.');
+                    return false;
+                }
 
                 return true;
             },
@@ -111,13 +119,15 @@ app.home = kendo.observable({
                 var model = homeModel,
                     email = model.email.toLowerCase(),
                     password = model.password;
-
+                     var tok = model.email + ':' + model.password;
+                    var hash = btoa(tok);
+                    
                 if (!model.validateData(model)) {
                     return false;
                 }
 
                 $.ajax({
-                    url: "http://peter200195-001-site1.btempurl.com/Account/LoginExternal?email=" + email + "&password=" + password,
+                    url: "http://peter200195-001-site1.btempurl.com/Account/LoginExternal?basicAuth=" + hash  + "&requiredRoleId=3",
                     type: "POST",
                     dataType: "json",
                     contentType: "application/json",
@@ -131,7 +141,9 @@ app.home = kendo.observable({
                                 rememberme: true
                             };
                             successHandler(rememberedData);
-                        } else {
+                        }else if (status.status == "ROLE NOT MATCH"){
+                               model.set('errorMessage', 'Този акаунт няма права да използва това приложение.');
+                        }   else {
                             init();
                         }
                     },
@@ -155,7 +167,7 @@ app.home = kendo.observable({
                     return false;
                 }
                     $.ajax({
-                    url: "http://peter200195-001-site1.btempurl.com/Account/RegisterExternal?email=" + email + "&password=" + password,
+                    url: "http://peter200195-001-site1.btempurl.com/Account/RegisterExternal?email=" + email + "&password=" + password + "&dataRole=User",
                     type: "POST",
                     dataType: "json",
                     contentType: "application/json",

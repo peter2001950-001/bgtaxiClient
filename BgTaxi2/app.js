@@ -99,8 +99,8 @@
 }());
 
 function logoutBtn(){
-    localStorage.removeItem("bgTaxiAuth_authData_homeView");
-    app["bgTaxiAuth_authData_homeView"] = null;
+    localStorage.removeItem("basicAuth");
+    app["basicAuth"] = null;
      app.mobileApp.navigate('components/home/view.html');
 }
 // START_CUSTOM_CODE_kendoUiMobileApp
