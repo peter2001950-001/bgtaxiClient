@@ -8,27 +8,47 @@ app.callTaxi = kendo.observable({
             alertMessage(getFromLocalStorage("currentRequestStatus"), "Изпратена!", "warning");
             document.getElementById("callTBtn").classList.add("disabled");
             var timer = setInterval(function () {
-                $.ajax({
-                    url: "http://peter200195-001-site1.btempurl.com/request/requestStatus?requestID=" + requestId + "&basicAuth=" + hash,
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (status) {
-                        if (status.status == "TAKEN") {
-                            clearInterval(timer);
-                            alertMessage("Заявката беше приета успешно!", "Приета", "success");
-                            saveInLocalStorage("currentRequestStatus", "Заявката беше приета успешно!");
-                            removeFromLocalStorage("currentRequestId");
-                        }
-                    },
-                    error: function () {
-                        alertMessage("Възникна грешка!", "Грешка", "danger");
-                        $(".progress-bar").css("width", "0%");
-                        $("#callTBtn").removeClass("disabled");
-                        removeFromLocalStorage("currentRequestId");
-                    }
-                });
-            }, 10000);
+                        $.ajax({
+                            url: "http://bgtaxi.net/request/requestStatus?requestID=" + requestId + "&basicAuth=" + hash,
+                            type: "POST",
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (status) {
+                                console.log(status.status);
+                                switch(status.status){
+                                    case "TAKEN":
+                                    console.log("from taken");
+                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.distance;
+                                    alertMessage(Information, "Приета!", "success");
+                                    saveInLocalStorage("currentRequestStatus",Information);
+                                    break;
+                                    case "ON ADDRESS":
+                                    console.log("from on address");
+                                     alertMessage("Вашето такси пристигна на посочения от вас адрес. ", "", "info");
+                                    $("#callTBtn").removeClass("disabled");
+                                     clearInterval(timer);
+                                    removeFromLocalStorage("currentRequestId");
+                                    break;
+                                    case "NO CHANGE":
+                                    console.log("from no change");
+                                    alertMessage(saveInLocalStorage(Information, "takenRequestInfo"), "Приета!", "success");
+                                    break;
+                                    case "NOT TAKEN":
+                                    break;
+                                    default:
+                                    	alert(status.status);
+                                    break;
+
+                                }
+                            },
+                            error: function () {
+                                alertMessage("Възникна грешка!", "Грешка", "danger");
+                                $(".progress-bar").css("width", "0%");
+                                $("#callTBtn").removeClass("disabled");
+                                removeFromLocalStorage("currentRequestId");
+                            }
+                        });
+                    }, 2000);
         }
     },
     afterShow: function () { },
@@ -59,7 +79,7 @@ function clicked() {
         }, 500);
         var positionCou = position.coords;
         $.ajax({
-            url: "http://peter200195-001-site1.btempurl.com/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + auth,
+            url: "http://bgtaxi.net/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + auth,
             type: "POST",
             dataType: "json",
             contentType: "application/json",
@@ -74,22 +94,37 @@ function clicked() {
                     alertMessage(messageToShow, "Изпратена!", "warning");
                     saveInLocalStorage("currentRequestStatus", messageToShow);
                     saveInLocalStorage("currentRequestId", requestId);
-                    saveInLocalStorage("currentRequestHash", hash);
                     var timer = setInterval(function () {
+                        console.log("shajda");
                         $.ajax({
-                            url: "http://peter200195-001-site1.btempurl.com/request/requestStatus?requestID=" + requestId + "&basicAuth=" + hash,
+                            url: "http://bgtaxi.net/request/requestStatus?requestID=" + requestId + "&basicAuth=" + auth,
                             type: "POST",
                             dataType: "json",
                             contentType: "application/json",
                             success: function (status) {
-                                if (status.status == "TAKEN") {
-                                    clearInterval(timer);
-                                    alertMessage("Заявката беше приета успешно!", "Приета", "success");
-                                    saveInLocalStorage("currentRequestStatus", "Заявката беше приета успешно!");
+                                console.log(status.status);
+                                switch(status.status){
+                                    case "TAKEN":
+                                    console.log("from taken");
+                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.distance;
+                                    alertMessage(Information, "Приета!", "success");
+                                    saveInLocalStorage("currentRequestStatus", Information);
+                                    break;
+                                    case "ON ADDRESS":
+                                    console.log("from on address");
+                                     alertMessage("Вашето такси пристигна на посочения от вас адрес. ", "", "info");
+                                    $("#callTBtn").removeClass("disabled");
+                                     clearInterval(timer);
                                     removeFromLocalStorage("currentRequestId");
-                                    var now = new Date();
-                                    var stringDate = now.getDay + "/" + now.getMonth + "/" + now.getFullYear + " " + now.getHours() + ":" + now.getMinutes + ":" + now.getSeconds;
-                                    saveInLocalStorage("lastRequestDateTime", nowDateTime());
+                                    break;
+                                    case "NO CHANGE":
+                                    break;
+                                    case "NOT TAKEN":
+                                    break;
+                                    default:
+                                    	alert(status.status);
+                                    break;
+
                                 }
                             },
                             error: function () {
@@ -99,7 +134,7 @@ function clicked() {
                                 removeFromLocalStorage("currentRequestId");
                             }
                         });
-                    }, 10000);
+                    }, 2000);
                 }
             },
             error: function () {
