@@ -470,8 +470,8 @@
 /*Custom overrides*/
 /*Primary button*/
 .km-nova .button-group .km-button.primary {
-  background-color: #fea400;
-  border-color: #fea400;
+  background-color: #ff4350;
+  border-color: #ff4350;
   color: #fff;
 }
 .km-nova .button-group .km-button.primary.km-state-active {
@@ -562,4 +562,8 @@
   min-width: 6em;
   color: #32364c;
   word-wrap: break-word;
+}
+/*Image Gallery field*/
+.km-nova .field--gallery:not(.field--gallery-slider) .field__content .gallery__items:after {
+  background: #dfe1e2;
 }

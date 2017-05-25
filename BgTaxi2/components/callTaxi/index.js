@@ -2,6 +2,7 @@
 
 app.callTaxi = kendo.observable({
     onShow: function () {
+        document.getElementById("appDrawer").style.visibility = "visible";
         if (getFromLocalStorage("currentRequestId") != undefined) {
             var requestId = getFromLocalStorage("currentRequestId");
             var hash = getFromLocalStorage("basicAuth");
@@ -18,7 +19,7 @@ app.callTaxi = kendo.observable({
                                 switch(status.status){
                                     case "TAKEN":
                                     console.log("from taken");
-                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.distance;
+                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.duraction;
                                     alertMessage(Information, "Приета!", "success");
                                     saveInLocalStorage("currentRequestStatus",Information);
                                     break;
@@ -106,7 +107,7 @@ function clicked() {
                                 switch(status.status){
                                     case "TAKEN":
                                     console.log("from taken");
-                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.distance;
+                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.duraction;
                                     alertMessage(Information, "Приета!", "success");
                                     saveInLocalStorage("currentRequestStatus", Information);
                                     break;
