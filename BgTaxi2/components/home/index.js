@@ -30,8 +30,8 @@ var account = (function () {
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                
-                    success: function (status) {
+
+                success: function (status) {
                     saveInLocalStorage("accessToken", status.accessToken);
                     document.getElementById("home-password").value = "";
                     if (status.status == "OK") {
@@ -55,6 +55,7 @@ var account = (function () {
     }
 
     function signup() {
+
         while (getFromLocalStorage("accessToken") == undefined) {
             $("#errorMessage").html(languagePack[currentLanguage].pleaseWait);
         }
@@ -79,6 +80,11 @@ var account = (function () {
                         saveInLocalStorage("user", "true");
                         saveInLocalStorage("userFirstName", firstName);
                         saveInLocalStorage("userLastName", lastName);
+                        views.signinView()
+                        document.getElementById("register-first-name").value = "";
+                        document.getElementById("register-email").value = "";
+                         document.getElementById("register-last-name").value = "";
+                         document.getElementById("register-phone-number").value = "";
                         app.mobileApp.navigate('components/callTaxi/view.html');
                     } else if (status.status == "ERR") {
 
@@ -126,14 +132,7 @@ function startWorker() {
     }
 };
 
- $(document).ajaxStart(function(){
-        $(".button-group").css("display", "none");
-        $("#loading").css("display", "inline");
-    });
-    $(document).ajaxComplete(function(){
-         $(".button-group").css("display", "inline");
-        $("#loading").css("display", "none");
-    });
+
 // START_CUSTOM_CODE_homeModel
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 

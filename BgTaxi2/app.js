@@ -1,12 +1,12 @@
 'use strict';
 
-(function() {
+(function () {
     var app = {
         data: {}
     };
 
-    var bootstrap = function() {
-        $(function() {
+    var bootstrap = function () {
+        $(function () {
             app.mobileApp = new kendo.mobile.Application(document.body, {
                 skin: 'nova',
                 initial: 'components/home/view.html'
@@ -15,19 +15,20 @@
     };
 
     if (window.cordova) {
-        document.addEventListener('deviceready', function() {
+        document.addEventListener('deviceready', function () {
+            
             if (navigator && navigator.splashscreen) {
                 navigator.splashscreen.hide();
             }
 
             var element = document.getElementById('appDrawer');
-            if (typeof(element) != 'undefined' && element !== null) {
+            if (typeof (element) != 'undefined' && element !== null) {
                 if (window.navigator.msPointerEnabled) {
-                    $('#navigation-container').on('MSPointerDown', 'a', function(event) {
+                    $('#navigation-container').on('MSPointerDown', 'a', function (event) {
                         app.keepActiveState($(this));
                     });
                 } else {
-                    $('#navigation-container').on('touchstart', 'a', function(event) {
+                    $('#navigation-container').on('touchstart', 'a', function (event) {
                         app.keepActiveState($(this).closest('li'));
                     });
                 }
@@ -47,7 +48,7 @@
 
     window.app = app;
 
-    app.isOnline = function() {
+    app.isOnline = function () {
         if (!navigator || !navigator.connection) {
             return true;
         } else {
@@ -55,7 +56,7 @@
         }
     };
 
-    app.openLink = function(url) {
+    app.openLink = function (url) {
         if (url.substring(0, 4) === 'geo:' && device.platform === 'iOS') {
             url = 'http://maps.apple.com/?ll=' + url.substring(4, url.length);
         }
@@ -69,8 +70,8 @@
 
     /// start appjs functions
     /// end appjs functions
-    app.showFileUploadName = function(itemViewName) {
-        $('.' + itemViewName).off('change', 'input[type=\'file\']').on('change', 'input[type=\'file\']', function(event) {
+    app.showFileUploadName = function (itemViewName) {
+        $('.' + itemViewName).off('change', 'input[type=\'file\']').on('change', 'input[type=\'file\']', function (event) {
             var target = $(event.target),
                 inputValue = target.val(),
                 fileName = inputValue.substring(inputValue.lastIndexOf('\\') + 1, inputValue.length);
@@ -80,8 +81,8 @@
 
     };
 
-    app.clearFormDomData = function(formType) {
-        $.each($('.' + formType).find('input:not([data-bind]), textarea:not([data-bind])'), function(key, value) {
+    app.clearFormDomData = function (formType) {
+        $.each($('.' + formType).find('input:not([data-bind]), textarea:not([data-bind])'), function (key, value) {
             var domEl = $(value),
                 inputType = domEl.attr('type');
 
@@ -96,13 +97,41 @@
         });
     };
 
-}());
+} ());
 
-function logoutBtn(){
-    localStorage.removeItem("basicAuth");
-    app["basicAuth"] = null;
-     app.mobileApp.navigate('components/home/view.html');
+function logoutBtn() {
+
+
+    $.ajax({
+        url: "http://localhost:35486/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        success: function (status) {
+            if(status.status == "OK"){
+            localStorage.removeItem("user");
+            app["user"] = null;
+            localStorage.removeItem("userFirstName");
+            localStorage.removeItem("userLastName");
+            app.mobileApp.navigate('components/home/view.html');
+        }
+        },
+        erorr: function () {
+
+        }
+    });
 }
+
+$(document).ajaxStart(function(){
+     $("#appDrawer").data("kendoMobileDrawer").hide();
+    $(".popup-loading").css("display", "block");
+
+});
+$(document).ajaxComplete(function(){
+    $("#appDrawer").data("kendoMobileDrawer").hide();
+    $(".popup-loading").css("display", "none");
+});
+
 // START_CUSTOM_CODE_kendoUiMobileApp
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 

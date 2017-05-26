@@ -27,8 +27,12 @@
 <body id="kendoUiMobileApp">
     <script src="components/callTaxi/index.js"></script>
     <script src="components/home/index.js"></script>
+    
     <div data-role="layout" data-id="main">
         <header data-role="header">
+             <div class="popup-loading" style="background: white; position: absolute; width: 100%; height: 100vh; opacity: 0.6; display: none;">
+               <img  style="margin: 40vh 30vw; width: 40vw;" src="loading.gif"></img>
+           </div>
             <div data-role="navbar">
                 <span data-role="view-title"></span>
                 <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
@@ -38,6 +42,9 @@
 
     <div data-role="layout" data-id="main-nonav">
         <header data-role="header">
+           <div class="popup-loading" style="background: white; position: absolute; width: 100%; height: 100vh; opacity: 0.5; display:none;">
+               <img  style="margin: 40vh 30vw; width: 40vw;" src="loading.gif"></img>
+           </div>
         </header>
     </div>
 
