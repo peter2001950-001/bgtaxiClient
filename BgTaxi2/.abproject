@@ -2,7 +2,7 @@
   "ProjectName": "BgTaxi2",
   "ProjectGuid": "c847860e-16e1-4775-82a2-ec28cc1ff61c",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.BgTaxi2",
+  "AppIdentifier": "com.telerik.BgTaxi",
   "DisplayName": "BgTaxiClient",
   "Author": "Petar Bechev",
   "Description": "BgTaxiClient used mainly for calling taxies",

@@ -587,7 +587,79 @@ Fields
     font-size: 1.2em;
 }
 
+#map .centerMarker {
+  position: absolute;
+  /*url of the marker*/
+  background: url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+  /*center the marker*/
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  /*fix offset when needed*/
+  margin-left: -10px;
+  margin-top: -34px;
+  /*size of the image*/
+  height: 34px;
+  width: 20px;
+  cursor: pointer;
+}
 
+.form-control{
+    margin: 0.5vh;
+}
+.address-form{
+
+    padding: 2vw;
+    overflow: hidden;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    background:white;
+}
+.address-form h3{
+    font-size: 3vh;
+    text-align: center;
+}
+.address-form h5{
+    font-size: 2vh;
+    text-align: center;
+    
+}
+#map{
+    width:100%; height: 88vh;
+}
+.form-text{
+    width: 95vw !important;
+}
+.form-textarea{
+    width: 95vw !important; height:8vh !important; resize: none !important;
+}
+.form-btn{
+    background: #ffd428;  width: 95vw;
+    margin: 0.5vh;
+}
+
+/*@media (max-height: 500px){
+    #map{
+        height: 50vh;
+    }
+}
+@media (min-height: 900px){
+    #map{
+        height: 66vh;
+    }
+    .address-form{
+        height: 24vh;
+    }
+    .form-btn{
+        height: 4vh;
+    }
+}
+@media (min-height: 600px){
+    .form-textarea{
+         height:8vh !important;
+    }
+}*/
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
 

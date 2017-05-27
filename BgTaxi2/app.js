@@ -103,7 +103,7 @@ function logoutBtn() {
 
 
     $.ajax({
-        url: "http://localhost:35486/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
+        url: "http://bgtaxi.net/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -131,6 +131,13 @@ $(document).ajaxComplete(function(){
     $("#appDrawer").data("kendoMobileDrawer").hide();
     $(".popup-loading").css("display", "none");
 });
+
+function getFromLocalStorage(key){
+    return localStorage.getItem(key);
+}
+function saveInLocalStorage(key, value){
+    localStorage.setItem(key, value);
+}
 
 // START_CUSTOM_CODE_kendoUiMobileApp
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes

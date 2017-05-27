@@ -1,191 +1,123 @@
 'use strict';
 
 app.callTaxi = kendo.observable({
-    onShow: function () {
-        document.getElementById("appDrawer").style.visibility = "visible";
-        if (getFromLocalStorage("currentRequestId") != undefined) {
-            var requestId = getFromLocalStorage("currentRequestId");
-            var hash = getFromLocalStorage("basicAuth");
-            alertMessage(getFromLocalStorage("currentRequestStatus"), "Изпратена!", "warning");
-            document.getElementById("callTBtn").classList.add("disabled");
-            var timer = setInterval(function () {
-                        $.ajax({
-                            url: "http://bgtaxi.net/request/requestStatus?requestID=" + requestId + "&basicAuth=" + hash,
-                            type: "POST",
-                            dataType: "json",
-                            contentType: "application/json",
-                            success: function (status) {
-                                console.log(status.status);
-                                switch(status.status){
-                                    case "TAKEN":
-                                    console.log("from taken");
-                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.duraction;
-                                    alertMessage(Information, "Приета!", "success");
-                                    saveInLocalStorage("currentRequestStatus",Information);
-                                    break;
-                                    case "ON ADDRESS":
-                                    console.log("from on address");
-                                     alertMessage("Вашето такси пристигна на посочения от вас адрес. ", "", "info");
-                                    $("#callTBtn").removeClass("disabled");
-                                     clearInterval(timer);
-                                    removeFromLocalStorage("currentRequestId");
-                                    break;
-                                    case "NO CHANGE":
-                                    console.log("from no change");
-                                    alertMessage(saveInLocalStorage(Information, "takenRequestInfo"), "Приета!", "success");
-                                    break;
-                                    case "NOT TAKEN":
-                                    break;
-                                    default:
-                                    	alert(status.status);
-                                    break;
+                                    onShow: function () {
+                                        navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 30000 });
+                                    },
+                                    afterShow: function () {
+                                    },
+                                });
 
-                                }
-                            },
-                            error: function () {
-                                alertMessage("Възникна грешка!", "Грешка", "danger");
-                                $(".progress-bar").css("width", "0%");
-                                $("#callTBtn").removeClass("disabled");
-                                removeFromLocalStorage("currentRequestId");
-                            }
-                        });
-                    }, 2000);
-        }
-    },
-    afterShow: function () { },
+var marker;
+var resized = false;
 
-});
-
-function clicked() {
-    document.getElementById("callTBtn").classList.add("disabled");
-    $('#loading').css("visibility", "visible");
-    $(".progress-bar").animate({
-        width: "30%"
-    }, 300);
-
-    var rememberKey = 'basicAuth',
-        auth = "";
-    if (localStorage) {
-        auth = localStorage.getItem(rememberKey);
-    } else {
-        auth = app[rememberKey];
+function geoSuccess(position) {
+    localStorage.setItem("geoLat", position.coords.latitude);
+    localStorage.setItem("geoLng", position.coords.longitude);
+    setMap();
+}
+function geoError() {
+    console.log("Unable to find location service");
+}
+function setMap() {
+    var uluru ;
+    if (getFromLocalStorage("geoLat") != undefined) {
+        var lat = getFromLocalStorage("geoLat");
+        var lng = getFromLocalStorage("geoLng");
+        
+        getAddress(lat, lng);
+        uluru = {lat: Number(lat) , lng: Number(lng)};
+        console.log(uluru);
+        var map = new google.maps.Map(document.getElementById('map'), {
+                                          zoom: 17,
+                                          center: uluru
+                                      });  
+    
+        $('<div/>').addClass('centerMarker').appendTo(map.getDiv());
+    
+        google.maps.event.addListener(map, "dragstart", function() {
+            
+            $("#startingAddressStreet").blur();
+            $("#startingAddressNumber").blur();
+            $(".centerMarker").css("display", "block");
+            resized = false;
+            marker.setMap(null);
+        });
+        google.maps.event.addListener(map, "zoom_changed", function() {
+            marker.setMap(null);
+            if (!resized) {
+                $(".centerMarker").css("display", "block");
+            }
+            resized = false;
+        });
+        google.maps.event.addListener(map, "center_changed", function() {
+            if (!resized) {
+                try{
+                     marker.setMap(null);
+                }catch(e){
+                    
+                }
+                $("#startingAddressStreet").blur();
+                $("#startingAddressNumber").blur();
+                localStorage.setItem("mapLat", map.getCenter().lat());
+                localStorage.setItem("mapLng", map.getCenter().lng());
+            
+                marker = new google.maps.Marker({
+                                                    position: {lat:  map.getCenter().lat(), lng: map.getCenter().lng()}, 
+                                                    map: map,
+                                                    icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"
+                                                });
+                $(".centerMarker").css("display", "none");
+                getAddress(map.getCenter().lat(), map.getCenter().lng());
+            }
+        });
+    }else {
+        navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 30000 });
     }
     
-    navigator.geolocation.getCurrentPosition(geoSuccess, geoError, { timeout: 45000 });
-
-    function geoSuccess(position) {
-
-        $(".progress-bar").animate({
-            width: "70%"
-        }, 500);
-        var positionCou = position.coords;
+    function getAddress(lat, lng) {
         $.ajax({
-            url: "http://bgtaxi.net/request/createNewRequest?lon=" + positionCou.longitude + "&lat=" + positionCou.latitude + "&basicAuth=" + auth,
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            success: function (status) {
-                $(".progress-bar").animate({
-                    width: "100%"
-                }, 500);
-                if (status.status == "OK") {
-                    var requestId = status.requestId;
-                    var address = status.address;
-                    var messageToShow = "Заявката беше изпратена за " + address + "! Моля, изчакайте нейното приемане ...";
-                    alertMessage(messageToShow, "Изпратена!", "warning");
-                    saveInLocalStorage("currentRequestStatus", messageToShow);
-                    saveInLocalStorage("currentRequestId", requestId);
-                    var timer = setInterval(function () {
-                        console.log("shajda");
-                        $.ajax({
-                            url: "http://bgtaxi.net/request/requestStatus?requestID=" + requestId + "&basicAuth=" + auth,
-                            type: "POST",
-                            dataType: "json",
-                            contentType: "application/json",
-                            success: function (status) {
-                                console.log(status.status);
-                                switch(status.status){
-                                    case "TAKEN":
-                                    console.log("from taken");
-                                    var Information = "Заявката беше приета успешно от " + status.companyName + "! Автомобилът е регистрационен номер: " + status.carRegNum + "</br> Приблизително време: " + status.duraction;
-                                    alertMessage(Information, "Приета!", "success");
-                                    saveInLocalStorage("currentRequestStatus", Information);
-                                    break;
-                                    case "ON ADDRESS":
-                                    console.log("from on address");
-                                     alertMessage("Вашето такси пристигна на посочения от вас адрес. ", "", "info");
-                                    $("#callTBtn").removeClass("disabled");
-                                     clearInterval(timer);
-                                    removeFromLocalStorage("currentRequestId");
-                                    break;
-                                    case "NO CHANGE":
-                                    break;
-                                    case "NOT TAKEN":
-                                    break;
-                                    default:
-                                    	alert(status.status);
-                                    break;
-
-                                }
-                            },
-                            error: function () {
-                                alertMessage("Възникна грешка!", "Грешка", "danger");
-                                $(".progress-bar").css("width", "0%");
-                                $("#callTBtn").removeClass("disabled");
-                                removeFromLocalStorage("currentRequestId");
-                            }
-                        });
-                    }, 2000);
-                }
-            },
-            error: function () {
-                alertMessage("Грешка при изпращането на заявката!", "Грешка", "danger");
-                $("#callTBtn").removeClass("disabled");
-                $(".progress-bar").css("width", "0%");
-            }
-
-        });
-
-    }
-
-    function geoError() {
-        alertMessage("Не могат да се определят GPS кординати!", "Грешка", "danger");
-        document.getElementById("callTBtn").className = "btn btn-warning btn-lg";
+                   url: "http://bgtaxi.net/request/GetAddress?accessToken=" + getFromLocalStorage("accessToken") + "&lat=" + lat + "&lng=" + lng,
+                   type: "POST",
+                   dataType: "json",
+                   contentType: "application/json",
+                   success: function (status) {
+                       saveInLocalStorage("accessToken", status.accessToken);
+                   
+                       if (status.status == "OK") {
+                           $("#startingAddressStreet").val(status.address);
+                       } 
+                   },
+                   error: function (erorr) {
+                   }
+               });
     }
 }
 
-function alertMessage(message, strong, typeOf) {
-    var element = document.getElementById("messageBox");
-    element.className = "alert alert-" + typeOf;
-    element.innerHTML = "<strong>" + strong + "</strong> " + message;
-
-    document.getElementById('loading').style.visibility = "hidden";
-}
-
-function saveInLocalStorage(key, info) {
-    if (localStorage) {
-        localStorage.setItem(key, info);
-    } else {
-        app[key] = info;
+function onFocus() {
+    if (!resized) {
+        resized = true;/*
+        var lat = getFromLocalStorage("geoLat");
+        var lng = getFromLocalStorage("geoLng");
+        var center = new google.maps.LatLng(Number(lat), Number(lng));
+        // using global variable:
+        map.panTo(center);*/
     }
 }
-function getFromLocalStorage(key) {
-    if (localStorage) {
-        return localStorage.getItem(key);
-    } else {
-        return app[key];
-    }
-}
-function removeFromLocalStorage(key) {
-    if (localStorage) {
-        localStorage.removeItem(key);
-    } else {
-        app[key] = null;
-    }
-}
+$(document).click(function(e) {
 
+  // check that your clicked
+  // element has no id=info
 
-
+  if( e.target.id != 'startingAddressStreet' && e.target.id != "startingAddressNumber") {
+      console.log(e.target);
+    $("#startingAddressStreet").blur();
+            $("#startingAddressNumber").blur();
+            $(".centerMarker").css("display", "block");
+            resized = false;
+            marker.setMap(null);
+  }
+});
 // START_CUSTOM_CODE_callTaxi
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
