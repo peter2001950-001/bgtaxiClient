@@ -614,7 +614,7 @@ Fields
     width: 100vw;
     position: absolute;
     bottom: 0;
-    background:white;
+    background:rgba(255,255,255,0.8);
 }
 .address-form h3{
     font-size: 3vh;
@@ -639,27 +639,30 @@ Fields
     margin: 0.5vh;
 }
 
-/*@media (max-height: 500px){
-    #map{
-        height: 50vh;
-    }
+.error-message{
+    background-color: rgba(255,0,12,0.7);
+    position: absolute;
+    top: 0px;
+    width: 100vw;
+    padding: 4px;
+    text-align: center;
+    color: White;
+    display:none;
+    
 }
-@media (min-height: 900px){
-    #map{
-        height: 66vh;
-    }
-    .address-form{
-        height: 24vh;
-    }
-    .form-btn{
-        height: 4vh;
-    }
+.my-location-btn{
+       position: absolute;
+    background: #ffd428;
+    bottom: 38vh;
+    left: 15px;
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    padding: 5px;
 }
-@media (min-height: 600px){
-    .form-textarea{
-         height:8vh !important;
-    }
-}*/
+.my-location-btn img{
+   width: 100%;
+}
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
 

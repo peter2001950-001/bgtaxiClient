@@ -7,5 +7,8 @@ languagePack["bg"] = {
     notActivatedAccount: "Този акаунт не е активиран. Проверете вашата поща!",
     noAccountFound: "Не беше намерен акаунт с посочените имейл и парола!",
     unexpectedError: "Възникна неочаквана грешка!",
-    alreadyTakenEmail: "Имейлът вече е зает"
+    alreadyTakenEmail: "Имейлът вече е зает",
+    noGPS: "Не е намерен GPS сигнал",
+    searchingGPS: "Търсене на GPS сигнал",
+    foundGPS: "Текущата локация е намерена"
 }

@@ -2,22 +2,64 @@
 
 app.callTaxi = kendo.observable({
                                     onShow: function () {
-                                        navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 30000 });
+                                        
+                                        $(".my-location-btn").css("bottom", document.getElementsByClassName("address-form")[0].offsetHeight + 10 + "px");
+                                        setMap();
+                                       setLocationInterval();
                                     },
                                     afterShow: function () {
                                     },
                                 });
 
+var currentLocationMarker;
 var marker;
 var resized = false;
+var map;
+var locationInterval;
+var noGPS = true;
+
+function setLocationInterval(){
+
+    showError(languagePack[currentLanguage].searchingGPS);
+    locationInterval = setInterval(function(){
+        
+        navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 15000 });
+    }, 3000);
+    
+}
 
 function geoSuccess(position) {
+    if(noGPS){
+        showError(languagePack[currentLanguage].foundGPS, "success");
+        noGPS = false;
+    }
+    console.log(position);
     localStorage.setItem("geoLat", position.coords.latitude);
     localStorage.setItem("geoLng", position.coords.longitude);
-    setMap();
+   
+    try{
+        currentLocationMarker.setMap(null);
+    }catch(e){
+        
+    }
+    currentLocationMarker = new google.maps.Marker({
+          position: {lat:  position.coords.latitude, lng: position.coords.longitude}, 
+          map: map,
+          icon: {url: "http://bgtaxi.net/blueDot1.png", scaledSize: new google.maps.Size(60, 60), anchor: new google.maps.Point(30, 30) },
+        zIndex: 100
+      });
+        
+    console.log(map);
+        
+    
 }
 function geoError() {
-    console.log("Unable to find location service");
+    if(!noGPS){
+        
+    showError(languagePack[currentLanguage].noGPS, "error");
+    noGPS = true;
+        currentLocationMarker.setMap(null);
+    }
 }
 function setMap() {
     var uluru ;
@@ -28,15 +70,16 @@ function setMap() {
         getAddress(lat, lng);
         uluru = {lat: Number(lat) , lng: Number(lng)};
         console.log(uluru);
-        var map = new google.maps.Map(document.getElementById('map'), {
-                                          zoom: 17,
-                                          center: uluru
-                                      });  
+        map = new google.maps.Map(document.getElementById('map'), {
+                                      zoom: 17,
+                                      center: uluru,
+                                      fullscreenControl: false,
+                                      mapTypeControl: false
+                                  });  
     
         $('<div/>').addClass('centerMarker').appendTo(map.getDiv());
     
         google.maps.event.addListener(map, "dragstart", function() {
-            
             $("#startingAddressStreet").blur();
             $("#startingAddressNumber").blur();
             $(".centerMarker").css("display", "block");
@@ -52,10 +95,9 @@ function setMap() {
         });
         google.maps.event.addListener(map, "center_changed", function() {
             if (!resized) {
-                try{
-                     marker.setMap(null);
-                }catch(e){
-                    
+                try {
+                    marker.setMap(null);
+                }catch (e) {
                 }
                 $("#startingAddressStreet").blur();
                 $("#startingAddressNumber").blur();
@@ -85,7 +127,8 @@ function setMap() {
                        saveInLocalStorage("accessToken", status.accessToken);
                    
                        if (status.status == "OK") {
-                           $("#startingAddressStreet").val(status.address);
+                           $("#startingAddressStreet").val(status.street_number);
+                           $("#startingAddressNumber").val(status.street_address);
                        } 
                    },
                    error: function (erorr) {
@@ -94,30 +137,49 @@ function setMap() {
     }
 }
 
+function showError(message, type){
+    switch(type){
+        case "success":
+        $(".error-message").css("background-color", "rgba(0,252,6,0.7)");
+        $(".error-message").css("color", "black");
+        $(".error-message").css("display", "block");
+        setTimeout(function(){
+        $(".error-message").css("display", "none");
+    }, 5000);
+        break;
+         case "error":
+        $(".error-message").css("background-color", "rgba(255,0,12,0.7)");
+        $(".error-message").css("color", "white");
+        $(".error-message").css("display", "block");
+        break;
+        case "warning":
+         $(".error-message").css("background-color", "rgba(252,225,0,0.7)");
+        $(".error-message").css("color", "black");
+        $(".error-message").css("display", "block");
+        setTimeout(function(){
+        $(".error-message").css("display", "none");
+    }, 5000);
+        break;
+        default: 
+         $(".error-message").css("background-color", "rgba(91,91,91,0.7)");
+        $(".error-message").css("color", "white");
+        $(".error-message").css("display", "block");
+    }
+    $(".error-message").html(message);
+    
+    
+}
+
+function setMyLocation(){
+    map.setCenter({lat: Number(getFromLocalStorage("geoLat")), lng: Number(getFromLocalStorage("geoLng"))});
+}
+
 function onFocus() {
     if (!resized) {
-        resized = true;/*
-        var lat = getFromLocalStorage("geoLat");
-        var lng = getFromLocalStorage("geoLng");
-        var center = new google.maps.LatLng(Number(lat), Number(lng));
-        // using global variable:
-        map.panTo(center);*/
+        resized = true;
     }
 }
-$(document).click(function(e) {
 
-  // check that your clicked
-  // element has no id=info
-
-  if( e.target.id != 'startingAddressStreet' && e.target.id != "startingAddressNumber") {
-      console.log(e.target);
-    $("#startingAddressStreet").blur();
-            $("#startingAddressNumber").blur();
-            $(".centerMarker").css("display", "block");
-            resized = false;
-            marker.setMap(null);
-  }
-});
 // START_CUSTOM_CODE_callTaxi
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 

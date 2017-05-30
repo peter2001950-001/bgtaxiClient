@@ -1,8 +1,10 @@
 <div data-role="view" data-title="Заявки" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow"
      data-after-show="app.callTaxi.afterShow" id="callTaxiScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
 
+    
     <div id="map" onresize="onMapResized()"></div>
-
+<div class="error-message">Грешка.....</div>
+    <div class="my-location-btn" onclick="setMyLocation()"><img src="images/my_location_48px.png"></div>
     <div class="address-form">
         <h3>НАЧАЛЕН АДРЕС</h3>
         <h5>Избери от картата или въведи адреса долу.</h5>
