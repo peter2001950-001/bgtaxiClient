@@ -10,10 +10,23 @@
         <h5>Избери от картата или въведи адреса долу.</h5>
         <div class="form-horizontal">
             <form>
-            <input id="startingAddressStreet" class="form-control form-text" type="text" placeholder="Начален адрес..." onfocus="onFocus()" />
+            <span class="input input--makiko">
+					<input class="input__field input__field--makiko" type="text" id="startingAddressStreetInput" onfocus="startingAddressFocused()" onfocusout="startingAddressFocusOut()">
+					<label class="input__label input__label--makiko" for="StartingAddressStreetInput">
+						<span class="input__label-content input__label-content--makiko" id="startingAddressStreet">Начален адрес..</span>
+					</label>
+				</span>
             <input id="startingAddressNumber" class="form-control form-text" type="text" placeholder= "Номер ..." onfocus="onFocus()" />
-            <button type="submit "class="btn form-btn">Напред</button>
+            <button type="submit" id="starting-submit" class="btn form-btn">Напред</button>
+                
           </form>
+            <div class="places-div">
+                <ul>
+                    <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
+                      <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
+                      <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
+                </ul>
+            </div>
         </div>
 
     </div>

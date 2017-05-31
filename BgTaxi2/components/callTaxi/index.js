@@ -107,6 +107,7 @@ function setMap() {
                 marker = new google.maps.Marker({
                                                     position: {lat:  map.getCenter().lat(), lng: map.getCenter().lng()}, 
                                                     map: map,
+                                                     zIndex: 99,
                                                     icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"
                                                 });
                 $(".centerMarker").css("display", "none");
@@ -127,7 +128,7 @@ function setMap() {
                        saveInLocalStorage("accessToken", status.accessToken);
                    
                        if (status.status == "OK") {
-                           $("#startingAddressStreet").val(status.street_number);
+                           $("#startingAddressStreet").html(status.street_number);
                            $("#startingAddressNumber").val(status.street_address);
                        } 
                    },
@@ -170,15 +171,33 @@ function showError(message, type){
     
 }
 
+function startingAddressFocused(){
+     if (!resized) {
+        resized = true;
+    }
+    $('#startingAddressStreetInput').val($('#startingAddressStreet').html());
+    $(".address-form").css("top", "0");
+    $("#startingAddressNumber").css("display", "none");
+    $("#starting-submit").css("display", "none");
+    $(".places-div").css("display", "block");
+    $("#map .centerMarker").css("z-index", "0");
+}
+function startingAddressFocusOut(){
+    $('#startingAddressStreet').html($('#startingAddressStreetInput').val());
+    $(".address-form").css("top", "");
+    $("#startingAddressNumber").css("display", "block");
+    $("#starting-submit").css("display", "block");
+    $(".places-div").css("display", "none");
+    $("#map .centerMarker").css("z-index", "1");
+    
+    
+    $('#startingAddressStreetInput').val("");
+}
+
 function setMyLocation(){
     map.setCenter({lat: Number(getFromLocalStorage("geoLat")), lng: Number(getFromLocalStorage("geoLng"))});
 }
 
-function onFocus() {
-    if (!resized) {
-        resized = true;
-    }
-}
 
 // START_CUSTOM_CODE_callTaxi
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
