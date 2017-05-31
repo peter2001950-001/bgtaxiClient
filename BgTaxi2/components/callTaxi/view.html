@@ -1,30 +1,61 @@
 <div data-role="view" data-title="Заявки" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow"
      data-after-show="app.callTaxi.afterShow" id="callTaxiScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
 
-    
     <div id="map" onresize="onMapResized()"></div>
-<div class="error-message">Грешка.....</div>
-    <div class="my-location-btn" onclick="setMyLocation()"><img src="images/my_location_48px.png"></div>
+    <div class="error-message">Грешка.....</div>
+    <div class="my-location-btn" onclick="setMyLocation()">
+        <img src="images/my_location_48px.png">
+    </div>
     <div class="address-form">
         <h3>НАЧАЛЕН АДРЕС</h3>
         <h5>Избери от картата или въведи адреса долу.</h5>
         <div class="form-horizontal">
             <form>
-            <span class="input input--makiko">
-					<input class="input__field input__field--makiko" type="text" id="startingAddressStreetInput" onfocus="startingAddressFocused()" onfocusout="startingAddressFocusOut()">
-					<label class="input__label input__label--makiko" for="StartingAddressStreetInput">
-						<span class="input__label-content input__label-content--makiko" id="startingAddressStreet">Начален адрес..</span>
-					</label>
-				</span>
-            <input id="startingAddressNumber" class="form-control form-text" type="text" placeholder= "Номер ..." onfocus="onFocus()" />
-            <button type="submit" id="starting-submit" class="btn form-btn">Напред</button>
-                
-          </form>
+                <span class="input input--makiko">
+                    <input class="input__field input__field--makiko" type="text" id="startingAddressStreetInput" onfocus="startingAddressFocused()" onfocusout="startingAddressFocusOut()">
+                    <label class="input__label input__label--makiko" for="StartingAddressStreetInput">
+                        <span class="input__label-content input__label-content--makiko" id="startingAddressStreet">Начален адрес..</span>
+                    </label>
+                </span>
+                <input id="startingAddressNumber" class="form-control form-text" type="text" placeholder= "Номер ..." onfocus="onFocus()" />
+                <button type="submit" id="starting-submit" class="btn form-btn">Напред</button>
+
+            </form>
             <div class="places-div">
+                <div class= "toggle-button-group">
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="streets-checkbox" type="checkbox">
+                        <label for="streets-checkbox" data-on-text="Улици" data-off-text="Улици"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="restaurants-checkbox" type="checkbox">
+                        <label for="restaurants-checkbox" data-on-text="Ресторанти" data-off-text="Ресторанти" style="width: 160px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="shops-checkbox" type="checkbox">
+                        <label for="shops-checkbox" data-on-text="Магазини" data-off-text="Магазини" style="width: 140px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="hotels-checkbox" type="checkbox">
+                        <label for="hotels-checkbox" data-on-text="Хотели" data-off-text="Хотели" style="width: 130px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+
+                </div>
+
                 <ul>
-                    <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
-                      <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
-                      <li><span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span></li>
+                    <li>
+                        <span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span>
+                    </li>
+                    <li class="odd">
+                        <span class="places-main-text ">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span>
+                    </li>
+                    <li>
+                        <span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -183,7 +183,7 @@ function startingAddressFocused(){
     $("#map .centerMarker").css("z-index", "0");
 }
 function startingAddressFocusOut(){
-    $('#startingAddressStreet').html($('#startingAddressStreetInput').val());
+   /* $('#startingAddressStreet').html($('#startingAddressStreetInput').val());
     $(".address-form").css("top", "");
     $("#startingAddressNumber").css("display", "block");
     $("#starting-submit").css("display", "block");
@@ -191,7 +191,7 @@ function startingAddressFocusOut(){
     $("#map .centerMarker").css("z-index", "1");
     
     
-    $('#startingAddressStreetInput').val("");
+    $('#startingAddressStreetInput').val("");*/
 }
 
 function setMyLocation(){

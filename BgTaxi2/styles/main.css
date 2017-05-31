@@ -587,6 +587,11 @@ Fields
     font-size: 1.2em;
 }
 
+
+
+ /* Map Center Marker*/
+
+
 #map .centerMarker {
   position: absolute;
   /*url of the marker*/
@@ -607,9 +612,10 @@ Fields
 .form-control{
     margin: 0.5vh;
 }
+/* Address Form **/
+
 .address-form{
 
-    padding: 2vw;
     overflow: hidden;
     width: 100vw;
     position: absolute;
@@ -674,6 +680,10 @@ Fields
 	width: calc(100% - 2em);
 	vertical-align: top;
 }
+
+
+/*Search input*/
+
 
 .input__field {
 	position: relative;
@@ -766,10 +776,120 @@ Fields
 	transform: scale3d(38, 38, 1);
 }
 
+.toggle-button {
+  position: relative;
+  display: inline-block;
+  color: #fff; }
+  .toggle-button label {
+    display: inline-block;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left; }
+  .toggle-button input {
+    display: none; }
+  .toggle-button__icon {
+    cursor: pointer;
+    pointer-events: none; }
+    .toggle-button__icon:before, .toggle-button__icon:after {
+      content: "";
+      position: absolute;
+      top: 45%;
+      left: 35%;
+      transition: 0.2s ease-out; }
+
+/*
+ * Toggle button variables
+ */
+/*
+ * Toggle button styles
+ */
+.toggle-button--aava label {
+  height: 30px;
+  line-height: 30px;
+  transition: all 0.2s;
+  border-radius: 2rem;     font-size: 14px; }
+  .toggle-button--aava label:before, .toggle-button--aava label:after {
+    position: absolute;
+    right: 1.5rem;
+    transition: all 0.2s .1s ease-out; }
+  .toggle-button--aava label:before {
+    content: attr(data-on-text); }
+  .toggle-button--aava label:after {
+    content: attr(data-off-text); }
+
+.toggle-button--aava input[type=checkbox] + label {
+  width: 120px;
+  background: #FF5335; }
+  .toggle-button--aava input[type=checkbox] + label:before {
+    opacity: 0;
+    transform: translate(0, 20px); }
+  .toggle-button--aava input[type=checkbox] + label:after {
+    opacity: 1;
+    transform: translate(0, 0); }
+
+.toggle-button--aava input[type=checkbox]:checked ~ label {
+  width: 120px;
+  background: #61B136; }
+  
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:before {
+  transform: translate(-10%, 100%) rotate(45deg);
+  width: 16.66667px; }
+
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:after {
+  transform: translate(30%) rotate(-45deg); }
+
+.toggle-button--aava .toggle-button__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 30px;
+  width: 30px; }
+  .toggle-button--aava .toggle-button__icon:before, .toggle-button--aava .toggle-button__icon:after {
+    height: 3px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); }
+  .toggle-button--aava .toggle-button__icon:before {
+    width: 25px;
+    transform: rotate(45deg); }
+  .toggle-button--aava .toggle-button__icon:after {
+    width: 25px;
+    transform: rotate(-45deg); }
+.toggle-button-group{
+    margin: 0 10px;
+    }
+
+
+/*Places Suggestions */
+
+
 .places-div{
     display:none;
 }
+.places-div ul{
+     background: rgba(245, 211, 43, 0.45);
+    
+    width: 100vw;
+    height: 98vh;
+    padding: 0;
+}
 
+.places-div ul li{
+    
+    padding: 15px;
+    list-style: none;
+    background: rgb(245, 211, 43);
+}
+.places-div ul li.odd{
+    background:rgb(245, 201, 43);
+    }
+
+
+.places-div li span.places-main-text{
+        font-size: 4.8vw;
+}
+.places-div li span.places-secondary-text{
+       display: block;
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
 
