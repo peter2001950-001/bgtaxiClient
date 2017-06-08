@@ -619,7 +619,7 @@ Fields
     overflow: hidden;
     width: 100vw;
     position: absolute;
-    bottom: 0;
+    bottom: 6px;
     background:rgba(255,255,255,0.8);
      transition:all 1s linear;
     }
@@ -636,14 +636,28 @@ Fields
     width:100%; height: 88vh;
 }
 .form-text{
-    width: 95vw !important;
+    width:100%;
+        box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: 0;
+    display: block;
+    padding: 7px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 5px;
+    font: 16px Arial,Helvetica,sans-serif;
+    height: 38px;
+    text-align: center;
+    border-top: 1px solid #ddd;
 }
 .form-textarea{
     width: 95vw !important; height:8vh !important; resize: none !important;
 }
 .form-btn{
     background: #ffd428;  width: 95vw;
-    margin: 0.5vh;
+    margin: 0 2.5vw ;
 }
 
 .error-message{
@@ -675,7 +689,7 @@ Fields
 	position: relative;
 	z-index: 1;
 	display: inline-block;
-	margin: 1em;
+	margin: 0.6em 1em;
 	max-width: 350px;
 	width: calc(100% - 2em);
 	vertical-align: top;
@@ -696,6 +710,7 @@ Fields
 	background: #f0f0f0;
 	color: #aaa;
 	font-weight: 400;
+        margin-bottom: 10px;
 	font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 }
@@ -730,15 +745,16 @@ Fields
 }
 .input--makiko {
 	overflow: hidden;
-	background: #CBCBCB;
+	
 }
 
 .input__field--makiko {
 	width: 100%;
-	background: transparent;
+	background: #CBCBCB;
 	color: #797693;
 	z-index: 10;
 	font-weight: 500;
+    text-align:center;
 }
 
 .input__label--makiko {
@@ -749,32 +765,8 @@ Fields
 	color: #fff;
 }
 
-.input__label--makiko::before {
-	content: '';
-	position: absolute;
-	width: 30px;
-	height: 30px;
-	top: 25%;
-	left: 10px;
-	background: url(../images/search.svg) no-repeat center center;
-	background-size: 100%;
-	-webkit-transition: -webkit-transform 0.4s cubic-bezier(0.7,0,0.3,1);
-	transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
-}
 
-.input__label-content--makiko {
-	display: block;
-	padding: 0.8em 0 0 2.80em;
-    font-size: 15px;
-	-webkit-transition: -webkit-transform 0.4s cubic-bezier(0.7,0,0.3,1);
-	transition: transform 0.4s cubic-bezier(0.7,0,0.3,1);
-}
 
-.input__field--makiko:focus + .input__label--makiko::before,
-.input--filled .input__label--makiko::before {
-	-webkit-transform: scale3d(38, 38, 1);
-	transform: scale3d(38, 38, 1);
-}
 
 .toggle-button {
   position: relative;
@@ -862,7 +854,9 @@ Fields
 
 /*Places Suggestions */
 
-
+#wrapper{
+     background: rgba(245, 211, 43, 0.45);
+    }
 .places-div{
     display:none;
 }
@@ -870,7 +864,6 @@ Fields
      background: rgba(245, 211, 43, 0.45);
     
     width: 100vw;
-    height: 98vh;
     padding: 0;
 }
 
@@ -878,18 +871,26 @@ Fields
     
     padding: 15px;
     list-style: none;
-    background: rgb(245, 211, 43);
+    background: rgba(245, 211, 43, 0.6);
+    
 }
 .places-div ul li.odd{
-    background:rgb(245, 201, 43);
+    background:rgba(197, 166, 12, 0.51);
+    
     }
 
 
 .places-div li span.places-main-text{
         font-size: 4.8vw;
+    font-weight: bold;
 }
 .places-div li span.places-secondary-text{
+    
+          font-style: italic;
+    font-size: 3.8vw;
        display: block;
+    
+    }
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
 
