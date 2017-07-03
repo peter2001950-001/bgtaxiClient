@@ -1,59 +1,51 @@
-<div data-role="view" data-title="Заявки" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow"
+<div data-role="view" data-title="НАЧАЛЕН АДРЕС" data-layout="main" data-model="app.callTaxi" data-show="app.callTaxi.onShow"
      data-after-show="app.callTaxi.afterShow"  id="callTaxiScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
 
-    <div id="map" onresize="onMapResized()"></div>
+    <div id="map"></div>
     <div class="error-message">Грешка.....</div>
-    <div class="my-location-btn" onclick="setMyLocation()">
+      <div class="my-location-btn" onclick="startingAddress.setMyLocation()">
         <img src="images/my_location_48px.png">
     </div>
     <div class="address-form">
-        <h3>НАЧАЛЕН АДРЕС</h3>
-        <h5>Избери от картата или въведи адреса долу.</h5>
+        <h3 id="starting-title">НАЧАЛЕН АДРЕС</h3>
+        <h5 id="starting-subtitle">Избери от картата или въведи адреса долу.</h5>
         <div class="form-horizontal">
                 <span class="input input--makiko">
-                    <input class="input__field input__field--makiko" type="text" id="startingAddressStreet" onkeypress="startingAddressKeyPressed(event)"  onfocus="startingAddressFocused()">
-                   <input id="startingAddressNumber" class="form-text" type="text" placeholder= "Номер ..." onfocus="onFocus()" />
+                    <input class="input__field input__field--makiko" type="text" id="startingAddressStreet" placeholder="Търсете тук..." onkeypress="startingAddress.startingAddressKeyPressed(event)"  onfocus="startingAddress.startingAddressFocused()">
+                    <button class="btn search-submit-btn "  style="display: none"  onclick="startingAddress.SearchPlace()">ТЪРСИ</button>
+                   <input id="startingAddressNumber" class="form-text" type="text" placeholder= "Номер ..." onkeypress="startingAddress.startingAddressNumberKeyPressed(event)"/>
                 </span>
                 
-                <button id="starting-submit" class="btn form-btn">Напред</button>
+                <button id="starting-submit" class="btn form-btn" onclick="startingAddress.submit()">Напред</button>
 
             <div class="places-div">
                 <div class= "toggle-button-group">
                     <div class="toggle-button toggle-button--aava">
-                        <input id="streets-checkbox" type="checkbox">
+                        <input id="streets-checkbox" type="checkbox" onclick="startingAddress.SearchPlace()">
                         <label for="streets-checkbox" data-on-text="Улици" data-off-text="Улици"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
                     <div class="toggle-button toggle-button--aava">
-                        <input id="restaurants-checkbox" type="checkbox">
+                        <input id="restaurants-checkbox" type="checkbox" onclick="startingAddress.SearchPlace()">
                         <label for="restaurants-checkbox" data-on-text="Ресторанти" data-off-text="Ресторанти" style="width: 160px"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
                     <div class="toggle-button toggle-button--aava">
-                        <input id="shops-checkbox" type="checkbox">
+                        <input id="shops-checkbox" type="checkbox" onclick="startingAddress.SearchPlace()">
                         <label for="shops-checkbox" data-on-text="Магазини" data-off-text="Магазини" style="width: 140px"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
                     <div class="toggle-button toggle-button--aava">
-                        <input id="hotels-checkbox" type="checkbox">
+                        <input id="hotels-checkbox" type="checkbox" onclick="startingAddress.SearchPlace()">
                         <label for="hotels-checkbox" data-on-text="Хотели" data-off-text="Хотели" style="width: 130px"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
 
                 </div>
-            <div id="wrapper" style="height: 56vh;">
+            <div id="wrapper" style="height: 63vh; ">
                 <div id="scroller">
                 <ul id="starting-address-places-list">
-                    <li>
-                        <span class="places-main-text">Main TEXT</span>
-                        <span class="places-secondary-text">Secondary TEXT</span>
-                    </li>
-                    <li class="odd">
-                        <span class="places-main-text ">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span>
-                    </li>
-                    <li>
-                        <span class="places-main-text">Main TEXT</span><span class="places-secondary-text">Secondary TEXT</span>
-                    </li>
+                   
                 </ul>
                     </div>
                 </div>

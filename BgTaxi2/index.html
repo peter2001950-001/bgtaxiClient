@@ -29,15 +29,19 @@
     <body id="kendoUiMobileApp">
         <script src="components/callTaxi/index.js"></script>
         <script src="components/home/index.js"></script>
+         <script src="components/finishAddress/index.js"></script>
 
         <div data-role="layout" data-id="main">
             <header data-role="header">
                 <div class="popup-loading" style="background: white; position: absolute; width: 100%; height: 100vh; opacity: 0.6; display: none;">
-                    <img  style="margin: 40vh 30vw; width: 40vw;" src="images/loading.gif">
+                    <img  style="margin: 40vh 30vw; width: 40vw; z-index: 10;" src="images/loading.gif">
                 </div>
                 <div data-role="navbar" style="background: #ffd428">
+                 
                     <span data-role="view-title" style="color: #ff7628; text-align: center"></span>
-                    <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+                     <img class="nav_searchBtn" src="images/1498262658_11_Search.png" onclick="startingAddress.searchBtnClicked()" >
+                    <a data-role="button" id="nav-app-drawer" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+                     <img class="nav_backBtn" src="images/1498395111_arrow-back.png" onclick="startingAddress.searchBtnClicked()" >
                 </div>
             </header>
         </div>
@@ -45,7 +49,7 @@
         <div data-role="layout" data-id="main-nonav">
             <header data-role="header">
                 <div class="popup-loading" style="background: white; position: absolute; width: 100%; height: 100vh; opacity: 0.5; display:none;">
-                    <img  style="margin: 40vh 30vw; width: 40vw;" src="images/loading.gif"/>
+                    <img  style="margin: 40vh 30vw; width: 40vw; z-index:10;" src="images/loading.gif"/>
                 </div>
             </header>
         </div>

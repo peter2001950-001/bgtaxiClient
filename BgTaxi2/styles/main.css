@@ -587,13 +587,42 @@ Fields
     font-size: 1.2em;
 }
 
-
+.nav_searchBtn{
+    height: 34px;
+    float:right;
+    margin-top: 7px;
+    margin-right: 10px;
+}
+.nav_backBtn{
+    height: 34px;
+    float:left;
+    margin-top: 7px;
+    margin-right: 10px;
+    display:none;
+}
 
  /* Map Center Marker*/
 
 
 #map .centerMarker {
   position: absolute;
+  /*url of the marker*/
+  background: url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+  /*center the marker*/
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  /*fix offset when needed*/
+  margin-left: -10px;
+  margin-top: -34px;
+  /*size of the image*/
+  height: 34px;
+  width: 20px;
+  cursor: pointer;
+}
+
+#finishAddress-map .centerMarker{
+      position: absolute;
   /*url of the marker*/
   background: url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
   /*center the marker*/
@@ -622,17 +651,22 @@ Fields
     bottom: 6px;
     background:rgba(255,255,255,0.8);
      transition:all 1s linear;
-    }
+    z-index:3;
+}
 .address-form h3{
-    font-size: 3vh;
+    font-size: 5vw;
     text-align: center;
 }
 .address-form h5{
-    font-size: 2vh;
+    font-size: 4vw;
     text-align: center;
     
 }
 #map{
+    width:100%; height: 88vh;
+}
+
+#finishAddress-map{
     width:100%; height: 88vh;
 }
 .form-text{
@@ -699,10 +733,21 @@ Fields
 /*Search input*/
 
 
+.search-submit-btn{
+    float:left;
+    background: #FFFFFF;
+    width: 20%;
+    display: none;
+    height: 41px;
+    border-radius: 0 !important;
+        border: 2px solid #CBCBCB !important;
+    padding: 1px !important;
+    color: #737272 !important;
+}
 .input__field {
 	position: relative;
 	display: block;
-	float: right;
+	float: left;
 	padding: 0.8em;
 	width: 60%;
 	border: none;
@@ -714,6 +759,7 @@ Fields
 	font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	-webkit-appearance: none; /* for box shadows to show on iOS */
 }
+
 
 .input__field:focus {
 	outline: none;

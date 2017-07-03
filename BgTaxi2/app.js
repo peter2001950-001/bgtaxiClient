@@ -8,15 +8,14 @@
     var bootstrap = function () {
         $(function () {
             app.mobileApp = new kendo.mobile.Application(document.body, {
-                skin: 'nova',
-                initial: 'components/home/view.html'
-            });
+                                                             skin: 'nova',
+                                                             initial: 'components/home/view.html'
+                                                         });
         });
     };
 
     if (window.cordova) {
         document.addEventListener('deviceready', function () {
-            
             if (navigator && navigator.splashscreen) {
                 navigator.splashscreen.hide();
             }
@@ -78,7 +77,6 @@
 
             $('#' + target.attr('id') + 'Name').text(fileName);
         });
-
     };
 
     app.clearFormDomData = function (formType) {
@@ -87,7 +85,6 @@
                 inputType = domEl.attr('type');
 
             if (domEl.val().length) {
-
                 if (inputType === 'file') {
                     $('#' + domEl.attr('id') + 'Name').text('');
                 }
@@ -96,49 +93,80 @@
             }
         });
     };
-
-} ());
+}());
 
 function logoutBtn() {
-
-
     $.ajax({
-        url: "http://bgtaxi.net/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        success: function (status) {
-            if(status.status == "OK"){
-            localStorage.removeItem("user");
-            app["user"] = null;
-            localStorage.removeItem("userFirstName");
-            localStorage.removeItem("userLastName");
-            app.mobileApp.navigate('components/home/view.html');
-        }
-        },
-        erorr: function () {
-
-        }
-    });
+               url: "http://bgtaxi.net/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
+               type: "POST",
+               dataType: "json",
+               contentType: "application/json",
+               success: function (status) {
+                   if (status.status == "OK") {
+                       localStorage.removeItem("user");
+                       app["user"] = null;
+                       localStorage.removeItem("userFirstName");
+                       localStorage.removeItem("userLastName");
+                       app.mobileApp.navigate('components/home/view.html');
+                   }
+               },
+               erorr: function () {
+               }
+           });
 }
 
-$(document).ajaxStart(function(){
-     $("#appDrawer").data("kendoMobileDrawer").hide();
+$(document).ajaxStart(function() {
+    $("#appDrawer").data("kendoMobileDrawer").hide();
     $(".popup-loading").css("display", "block");
-
 });
-$(document).ajaxComplete(function(){
+$(document).ajaxComplete(function() {
     $("#appDrawer").data("kendoMobileDrawer").hide();
     $(".popup-loading").css("display", "none");
 });
 
-function getFromLocalStorage(key){
+function getFromLocalStorage(key) {
     return localStorage.getItem(key);
 }
-function saveInLocalStorage(key, value){
+function saveInLocalStorage(key, value) {
     localStorage.setItem(key, value);
 }
 
+var searchBtnIsClicked = false;
+var staringAddressView = false;
+
+function searchBtnClicked() {
+    if (staringAddressView) {
+        if (!searchBtnIsClicked) {
+            searchBtnIsClicked = true;
+            $("#startingAddressStreet").focus();
+            $("#startingAddressStreet").val("");
+            startingAddress.startingAddressFocused();
+        }else {
+            searchBtnIsClicked = false;
+            $("#startingAddressStreet").blur();
+            startingAddress.startingAddressFocusOut();
+        }  
+    }else{
+        if (!searchBtnIsClicked) {
+             searchBtnIsClicked = true;
+            $("#finishAddressStreet").focus();
+            $("#finishAddressStreet").val("");
+            finishAddress.Focus();
+        }else {
+            searchBtnIsClicked = false;
+            $("#finishAddressStreet").blur();
+               finishAddress.FocusOut();
+    }
+}
+    }
+
+function backBtnClicked(){
+     if (staringAddressView){
+           startingAddress.startingAddressFocusOut();
+     }else{
+           finishAddress.FocusOut();
+     }
+}
 // START_CUSTOM_CODE_kendoUiMobileApp
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 

@@ -1,34 +1,29 @@
 'use strict';
 
-app.callTaxi = kendo.observable({
+app.finishAddress = kendo.observable({
                                     onShow: function () {
                                         document.addEventListener("backbutton", backFunction); 
                                         $(".my-location-btn").css("bottom", document.getElementsByClassName("address-form")[0].offsetHeight + 10 + "px");
-                                        startingAddress.setMap();
-                                        startingAddress.setLocationInterval();
-                                        loaded();
-                                        staringAddressView = true;
+                                        finishAddress.setMap();
+                                       // finishAddress.setLocationInterval();
+                                        staringAddressView = false;
+                                        loaded1();
+                                        $("#finishAddressStreet").val("");
                                     },
                                     afterShow: function () {
                                     },
                                 });
 
-
-var myScroll;
-var isInSearchingMode = false;
-var geoSuccessAtTheBeginning = false;
 var backFunction = function() {
-    if(isInSearchingMode){
-        startingAddressFocusOut();
-    }
 }
-function loaded() {
+var myScroll1;
+
+function loaded1() {
     try {
-        myScroll.destroy();
+        myScroll1.destroy();
     }catch (e) {
     }
-    myScroll = new iScroll('wrapper', {hScrollbar: false, hideScrollbar: false});
-    console.log("loaded");
+    myScroll1 = new iScroll('wrapper', {hScrollbar: false, hideScrollbar: false});
 }
 
 document.addEventListener('touchmove', function (e) {
@@ -37,21 +32,23 @@ document.addEventListener('touchmove', function (e) {
 
 document.addEventListener('DOMContentLoaded', loaded, false);
 
-var startingAddress = (function() {
+
+var finishAddress = (function() {
     var currentLocationMarker;
     var marker;
     var resized = false;
     var map;
     var locationInterval;
     var noGPS = true;
-    var searchBtnIsClicked = false;
     var lastStreetAddress= "";
     var lastStreetNumber = "";
     var isStreetNumberShown = false;
     
     function setLocationInterval() {
         showError(languagePack[currentLanguage].searchingGPS);
-        locationInterval =  navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
+        locationInterval = setInterval(function() {
+            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 15000 });
+        }, 3000);
     }
 
     function geoSuccess(position) {
@@ -74,11 +71,7 @@ var startingAddress = (function() {
                                                            zIndex: 0
                                                        });
         
-        if(!geoSuccessAtTheBeginning){
-            geoSuccessAtTheBeginning = true;
-           setMyLocation();
-            console.log("set location");
-        }
+        console.log(map);
     }
     function geoError() {
         if (!noGPS) {
@@ -96,7 +89,7 @@ var startingAddress = (function() {
             getAddress(lat, lng);
             uluru = {lat: Number(lat) , lng: Number(lng)};
             console.log(uluru);
-            map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(document.getElementById('finishAddress-map'), {
                                           zoom: 17,
                                           center: uluru,
                                           fullscreenControl: false,
@@ -106,8 +99,8 @@ var startingAddress = (function() {
             $('<div/>').addClass('centerMarker').appendTo(map.getDiv());
     
             google.maps.event.addListener(map, "dragstart", function() {
-                $("#startingAddressStreet").blur();
-                $("#startingAddressNumber").blur();
+                $("#finishAddressStreet").blur();
+                $("#finishAddressNumber").blur();
                 $(".centerMarker").css("display", "block");
                 resized = false;
                 marker.setMap(null);
@@ -125,8 +118,8 @@ var startingAddress = (function() {
                         marker.setMap(null);
                     }catch (e) {
                     }
-                    $("#startingAddressStreet").blur();
-                    $("#startingAddressNumber").blur();
+                    $("#finishAddressStreet").blur();
+                    $("#finishAddressNumber").blur();
                     localStorage.setItem("mapLat", map.getCenter().lat());
                     localStorage.setItem("mapLng", map.getCenter().lng());
             
@@ -154,12 +147,12 @@ var startingAddress = (function() {
                            saveInLocalStorage("accessToken", status.accessToken);
                    
                            if (status.status == "OK") {
-                               $("#startingAddressStreet").val(status.street_number + " " + status.street_address);
+                               $("#finishAddressStreet").val(status.street_number + " " + status.street_address);
                                lastStreetAddress = status.street_number + " " + status.street_address;
                                lastStreetNumber = "";
                                isStreetNumberShown = false;
-                               $("#startingAddressNumber").css("display", "none");
-                               $("#startingAddressNumber").attr("disabled", false);
+                               $("#finishAddressNumber").css("display", "none");
+                               $("#finishAddressNumber").attr("disabled", false);
                            } 
                        },
                        error: function (erorr) {
@@ -199,52 +192,52 @@ var startingAddress = (function() {
         $(".error-message").html(message);
     }
 
-    function startingAddressFocused() {
+    function Focused() {
         if (!resized) {
             resized = true;
         }
         if(isStreetNumberShown){
-            lastStreetNumber = $("#startingAddressNumber").val();
+            lastStreetNumber = $("#finishAddressNumber").val();
         }
         isInSearchingMode = true
         searchBtnIsClicked = true;
-         $(".search-submit-btn").css("display", "block");
-        $("#startingAddressStreet").css("width", "80%");
+        $(".search-submit-btn").css("display", "block");
+        $("#finishAddressStreet").css("width", "80%");
          $(".nav_backBtn").css("display","block");
-          $(".nav_searchBtn").css("display","none");
+        $(".nav_searchBtn").css("display","none");
         $("#nav-app-drawer").css("display", "none");
-        $("#starting-title").html("ТЪРСЕНЕ");
-        $("#starting-subtitle").css("display", "none");
-        $('#startingAddressStreet').css("text-align", "left");
+        $("#finish-title").html("ТЪРСЕНЕ");
+        $("#finish-subtitle").css("display", "none");
+        $('#finishAddressStreet').css("text-align", "left");
         $(".address-form").css("top", "0");
-        $("#startingAddressNumber").css("display", "none");
-        $("#starting-submit").css("display", "none");
+        $("#finishAddressNumber").css("display", "none");
+        $("#finish-submit").css("display", "none");
         $(".places-div").css("display", "block");
-        $("#map .centerMarker").css("z-index", "0");
+        $("#finishAddress-map .centerMarker").css("z-index", "0");
     }
-    function startingAddressFocusOut() {
-            isInSearchingMode=false;
-        $(".search-submit-btn").css("display", "none");
-        $("#startingAddressStreet").css("width", "100%");
-
+    function FocusOut() {
+         isInSearchingMode=false;
+         $(".search-submit-btn").css("display", "none");
+        $("#finishAddressStreet").css("width", "100%");
          $(".nav_searchBtn").css("display","block");
          $(".nav_backBtn").css("display","none");
         $("#nav-app-drawer").css("display", "inline");
-        $("#starting-title").html("НАЧАЛЕН АДРЕС");
-        $("#starting-subtitle").css("display", "block");
+        $("#finish-title").html("КРАЕН АДРЕС");
+        $("#finish-subtitle").css("display", "block");        
         searchBtnIsClicked = false;
         $(".address-form").css("top", "");
-        $("#startingAddressStreet").val(lastStreetAddress)
-        $("#startingAddressNumber").val(lastStreetNumber)
-        $('#startingAddressStreet').css("text-align", "center");
-        $("#starting-submit").css("display", "block");
+        $("#finishAddressStreet").val(lastStreetAddress)
+        $("#finsihAddressNumber").val(lastStreetNumber)
+        $(".address-form").css("top", "");
+        $('#finishAddressStreet').css("text-align", "center");
+        $("#finish-submit").css("display", "block");
         $(".places-div").css("display", "none");
-        $("#map .centerMarker").css("z-index", "1");
-        if(isStreetNumberShown){
-            $("#startingAddressNumber").css("display", "block");
-            $("#startingAddressNumber").val(lastStreetNumber);
+        $("#finishAddress-map .centerMarker").css("z-index", "1");
+    if(isStreetNumberShown){
+            $("#finishAddressNumber").css("display", "block");
+            $("#finishAddressNumber").val(lastStreetNumber);
         }
-        $('#startingAddressStreet').blur();
+        $('#finishAddressStreet').blur();
     }
 
     function setMyLocation() {
@@ -253,26 +246,26 @@ var startingAddress = (function() {
     }
 
     function ShowSearchResults(places) {
-        $('#startingAddressStreet').blur();
-        $("#starting-address-places-list").empty();
+        $('#finishAddressStreet').blur();
+        $("#finish-address-places-list").empty();
         for (var i in places) {
-            $("#starting-address-places-list").append("<li " + (i % 2 == 0? "" : "class='odd' ") + "onclick='startingAddress.liClicked(" + i + ")'><span class='places-main-text'>" + places[i].MainText + "</span><span class='places-secondary-text'>" + places[i].Address + "</span><span hidden>" + places[i].PlaceId + "</span><span hidden>" + places[i].Type + "</span><span hidden>" + places[i].Location.Latitude + "</span><span hidden>" + places[i].Location.Longitude + "</span></li>");
+            $("#finish-address-places-list").append("<li " + (i % 2 == 0? "" : "class='odd' ") + "onclick='finishAddress.liClicked(" + i + ")'><span class='places-main-text'>" + places[i].MainText + "</span><span class='places-secondary-text'>" + places[i].Address + "</span><span hidden>" + places[i].PlaceId + "</span><span hidden>" + places[i].Type + "</span><span hidden>" + places[i].Location.Latitude + "</span><span hidden>" + places[i].Location.Longitude + "</span></li>");
         }
         loaded();
     }
 
-    function startingAddressKeyPressed(event) {
+    function AddressKeyPressed(event) {
         var code = event.keyCode || event.which;
         console.log("keypressed");
         if (code == 13) {
             SearchPlace();
         }        
     };
-    function startingAddressNumberKeyPressed(event) {
+    function NumberKeyPressed(event) {
         var code = event.keyCode || event.which;
         console.log("keypressed");
         if (code == 13) {
-            $('#startingAddressNumber').blur();
+            $('#finishAddressNumber').blur();
         }        
     };
 
@@ -280,19 +273,19 @@ var startingAddress = (function() {
         var lat = getFromLocalStorage("geoLat");
         var lng = getFromLocalStorage("geoLng");
         var typesString = "";
-        if ($('input#streets-checkbox').is(':checked')) {
+        if ($('input#finish-streets-checkbox').is(':checked')) {
             typesString+= "address|";
         }
-        if ($('input#restaurants-checkbox').is(':checked')) {
+        if ($('input#finish-restaurants-checkbox').is(':checked')) {
             typesString+= "restaurant|bar|";
         }
-        if ($('input#shops-checkbox').is(':checked')) {
+        if ($('input#finish-shops-checkbox').is(':checked')) {
             typesString+= "store|pharmacy|bakery|";
         }
-        if ($('input#hotels-checkbox').is(':checked')) {
+        if ($('input#finish-hotels-checkbox').is(':checked')) {
             typesString+= "lodging|establishment|";
         }
-        var query = $("#startingAddressStreet").val();
+        var query = $("#finishAddressStreet").val();
         $.ajax({
                    url: "http://bgtaxi.net/request/AutoSuggest?accessToken=" + getFromLocalStorage("accessToken") + "&lat=" + lat + "&lng=" + lng + "&types=" + typesString + "&query=" + query,
                    type: "POST",
@@ -311,53 +304,44 @@ var startingAddress = (function() {
     }
     
     function liClicked(item) {
-        var element = document.getElementById("starting-address-places-list").childNodes[item];
-        $("#startingAddressStreet").val(element.childNodes[0].innerHTML);
+        var element = document.getElementById("finish-address-places-list").childNodes[item];
+        console.log(element.childNodes);
+        $("#finishAddressStreet").val(element.childNodes[0].innerHTML);
         if (element.childNodes[3].innerHTML == "street_address") {
-            $("#startingAddressNumber").css("display", "none");
+            $("#finishAddressNumber").css("display", "none");
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
             isStreetNumberShown= true;  lastStreetNumber = "";
         } else if (element.childNodes[3].innerHTML == "route") {
-            $("#startingAddressNumber").val("");
-            $("#startingAddressNumber").css("display", "block");
-            $("#startingAddressNumber").attr("disabled", false);
-            $("#startingAddressNumber").focus();
+            $("#finishAddressNumber").val("");
+            $("#finishAddressNumber").css("display", "block");
+            $("#finishAddressNumber").attr("disabled", false);
+            $("#finishAddressNumber").focus();
+            
            lastStreetNumber = "";
             isStreetNumberShown = true;
             console.log("2");
         }else {
-            $("#startingAddressNumber").css("display", "block");
-            $("#startingAddressNumber").attr("disabled", true);
-            $("#startingAddressNumber").val(element.childNodes[1].innerHTML);
+            $("#finishAddressNumber").css("display", "block");
+            $("#finishAddressNumber").attr("disabled", true);
+            $("#finishAddressNumber").val(element.childNodes[1].innerHTML);
             lastStreetNumber = element.childNodes[1].innerHTML;
             isStreetNumberShown = false;
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
             console.log("3");
         }
-        lastStreetAddress=element.childNodes[0].innerHTML;
-        
-        startingAddressFocusOut();
-    }
-    
-   
-    
-    
-    function submit(){
-         $("#wrapper").attr("id", "wrapper1");
-        app.mobileApp.navigate('components/finishAddress/view.html');
+        lastStreetAddress = element.childNodes[0].innerHTML;
+        FocusOut();
     }
     return {
         setLocationInterval: setLocationInterval,
         setMap: setMap,
-        startingAddressFocused: startingAddressFocused,
-        startingAddressFocusOut: startingAddressFocusOut,
+        Focus: Focused,
+        FocusOut: FocusOut,
         setMyLocation: setMyLocation,
-        startingAddressKeyPressed: startingAddressKeyPressed,
-        startingAddressNumberKeyPressed: startingAddressNumberKeyPressed,
+        StreetKeyPressed: AddressKeyPressed,
+        NumberKeyPressed: NumberKeyPressed,
         SearchPlace: SearchPlace,
-        liClicked: liClicked,
-        submit: submit,
-        searchBtnClicked: searchBtnClicked
+        liClicked: liClicked
         }
     
     })();

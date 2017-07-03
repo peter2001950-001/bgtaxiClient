@@ -1,0 +1,58 @@
+<div data-role="view" data-title="КРАЕН АДРЕС" data-layout="main" data-model="app.finishAddress" data-show="app.finishAddress.onShow"
+     data-after-show="app.finishAddress.afterShow"  id="finishAddressScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
+
+    <div id="finishAddress-map"></div>
+    <div class="error-message">Грешка.....</div>
+    <div class="my-location-btn" onclick="finishAddress.setMyLocation()">
+        <img src="images/my_location_48px.png">
+    </div>
+    <div class="address-form">
+        <h3 id="finish-title">КРАЕН АДРЕС</h3>
+        <h5 id="finish-subtitle">Избери от картата или въведи адреса долу.</h5>
+        <div class="form-horizontal">
+                <span class="input input--makiko">
+                    <input class="input__field input__field--makiko" type="text" id="finishAddressStreet" placeholder="Търсете тук..." onkeypress="finishAddress.StreetKeyPressed(event)"  onfocus="finishAddress.Focus()">
+
+                    <button class="btn search-submit-btn "  style="display: none"  onclick="finishAddress.SearchPlace()">ТЪРСИ</button>
+                    <input id="finishAddressNumber" class="form-text" type="text" placeholder= "Номер ..." onkeypress="finishAddress.NumberKeyPressed(event)"/>
+                </span>
+                
+                <button id="finish-submit" class="btn form-btn">Напред</button>
+
+            <div class="places-div">
+                <div class= "toggle-button-group">
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="finish-streets-checkbox" type="checkbox" onclick="finishAddress.SearchPlace()">
+                        <label for="finish-streets-checkbox" data-on-text="Улици" data-off-text="Улици"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="finish-restaurants-checkbox" type="checkbox" onclick="finishAddress.SearchPlace()">
+                        <label for="finish-restaurants-checkbox" data-on-text="Ресторанти" data-off-text="Ресторанти" style="width: 160px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="finish-shops-checkbox" type="checkbox" onclick="finishAddress.SearchPlace()">
+                        <label for="finish-shops-checkbox" data-on-text="Магазини" data-off-text="Магазини" style="width: 140px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="finish-hotels-checkbox" type="checkbox" onclick="finishAddress.SearchPlace()">
+                        <label for="finish-hotels-checkbox" data-on-text="Хотели" data-off-text="Хотели" style="width: 130px"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
+
+                </div>
+            <div id="wrapper" style="height: 63vh;">
+                <div id="scroller">
+                <ul id="finish-address-places-list">
+                   
+                </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
