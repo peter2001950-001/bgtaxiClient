@@ -937,6 +937,97 @@ Fields
        display: block;
     
     }
+
+
+
+/**Confirming View**/
+
+.confirm-item{
+         /* background: rgba(191, 190, 190, 0.21); */
+    padding: 10px 3%;
+    clear: both;
+    display: block;
+    border-bottom-color: #B5B5B5;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    /* border: 1px solid; */
+    /* padding-bottom: 5px; */
+    margin: 0 10px;
+}
+.confirm-item-icon-div{
+        width: 7vh;
+    float: left;
+    padding: 1.5vh .6vh;
+    margin-right: 4%;
+
+}
+.confirm-item-icon{
+    width: 100%;
+    
+}
+.confirm-group{
+    background: rgba(191, 190, 190, 0.21);
+}
+.confirm-item-main-text{
+        font-weight: bold !important;
+    font-size: 2.6vh !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 2.3vh !important;
+}
+.confirm-text-group::after{
+  clear:both;
+    display: block;
+    content: "";
+}
+.confirm-item-icon-div::after{
+    clear:both;
+    display: block;
+    content: "";
+}
+#purchaseBtn{
+    position: absolute;
+    bottom: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
+}
+
+.cancel-btn{
+    background: #ff2828;
+    color: White;   
+    width: 95vw;
+    margin: 0 2.5vw;
+    
+    
+}
+
+@media screen and (max-height: 530px){
+   .confirm-item-main-text{
+    font-size: 3vh !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 2.5vh !important;
+} 
+   .confirm-item-icon-div{
+        width: 6.5vh;
+        } 
+    }
+@media screen and (min-heignt: 700px){
+    
+     .confirm-item-main-text{
+    font-size: 20px !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 17px !important;
+} 
+    .confirm-item{
+        height: 120px !important;
+    }
+}
+
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
 

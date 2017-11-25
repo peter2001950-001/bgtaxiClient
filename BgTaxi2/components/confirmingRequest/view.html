@@ -1,0 +1,34 @@
+<div data-role="view" data-title="ПОТВЪРЖДАВАНЕ" data-layout="main-norm" data-model="app.confirmingRequest" data-show="app.confirmingRequest.onShow"
+     data-after-show="app.confirmingRequest.afterShow"  id="confirmingRequestScreet" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
+
+    <div class="confirm-group">
+        <div id="startingAddress-confirm-item" class="confirm-item">
+            <div class="confirm-item-icon-div">
+                
+            <img class="confirm-item-icon" src="images/AMarkerIcon.png" />
+            </div>
+            <div class= "confirm-text-group" onclick="confirmingRequest.startingItemClicked()">
+            <h2 id="startingMainText" class ="confirm-item-main-text" >Основен текст .........</h2>
+             <h3 id="startingSecontaryText" class ="confirm-item-secondary-text" >Допълнителен текст .........</h3>
+          </div>  
+        </div>
+        <div id="finishAddress-confirm-item" class="confirm-item">
+            <div class="confirm-item-icon-div">
+                
+            <img class="confirm-item-icon" src="images/BMarkerIcon.png" />
+            </div>
+            <div class= "confirm-text-group">
+            <h2 id="finishMainText" class ="confirm-item-main-text" >Основен текст .........</h2>
+             <h3 id="finishSecontaryText" class ="confirm-item-secondary-text" >Допълнителен текст .........</h3>
+          </div>  
+        </div>
+    </div>
+    
+    <div id="SendRequestLoading" style= "display: none"> 
+       <div style="width: 50%; margin: 0 auto" id="loader"> <img src="images/loading.gif" width="100%"> </div>
+        <div style="margin: 0 15px;text-align: center;"><h2 id="loadingText">Търсим подходящ автомобил. Моля, изчакайте</h2></div>
+    </div>
+    
+    <button id="purchaseBtn" class="btn form-btn" onclick="confirmingRequest.sendRequest()">ПОРЪЧАЙ</button>
+
+    </div>

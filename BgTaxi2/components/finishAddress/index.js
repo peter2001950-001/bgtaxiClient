@@ -9,6 +9,7 @@ app.finishAddress = kendo.observable({
                                         staringAddressView = false;
                                         loaded1();
                                         $("#finishAddressStreet").val("");
+                                        console.log(startingAddress.getChosenAddress());
                                     },
                                     afterShow: function () {
                                     },
@@ -19,6 +20,9 @@ var backFunction = function() {
 var myScroll1;
 
 function loaded1() {
+     if($("#wrapper").length == 0){
+        $("#wrapper2").attr("id", "wrapper");
+    }
     try {
         myScroll1.destroy();
     }catch (e) {
@@ -43,7 +47,8 @@ var finishAddress = (function() {
     var lastStreetAddress= "";
     var lastStreetNumber = "";
     var isStreetNumberShown = false;
-    
+    var address;
+    var placeLocation;
     function setLocationInterval() {
         showError(languagePack[currentLanguage].searchingGPS);
         locationInterval = setInterval(function() {
@@ -101,6 +106,8 @@ var finishAddress = (function() {
             google.maps.event.addListener(map, "dragstart", function() {
                 $("#finishAddressStreet").blur();
                 $("#finishAddressNumber").blur();
+                $(".address-form").slideUp(200);
+                $(".my-location-btn").fadeOut(200);
                 $(".centerMarker").css("display", "block");
                 resized = false;
                 marker.setMap(null);
@@ -129,7 +136,9 @@ var finishAddress = (function() {
                                                         zIndex: 99,
                                                         icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"
                                                     });
-                    $(".centerMarker").css("display", "none");
+                    $(".centerMarker").css("visibility", "100%");
+                    $(".address-form").slideDown(200);
+                    $(".my-location-btn").fadeIn(200);
                     getAddress(map.getCenter().lat(), map.getCenter().lng());
                 }
             });
@@ -149,10 +158,18 @@ var finishAddress = (function() {
                            if (status.status == "OK") {
                                $("#finishAddressStreet").val(status.street_number + " " + status.street_address);
                                lastStreetAddress = status.street_number + " " + status.street_address;
+                                placeLocation = {lat: lat, lng: lng};
                                lastStreetNumber = "";
                                isStreetNumberShown = false;
                                $("#finishAddressNumber").css("display", "none");
                                $("#finishAddressNumber").attr("disabled", false);
+                           }  else if(status.status =="INVALID ACCESSTOKEN"){
+                               localStorage.removeItem("accessToken");
+                               localStorage.removeItem("userFirstName");
+                               
+                               localStorage.removeItem("user");
+                               localStorage.removeItem("userLastName");
+                               app.mobileApp.navigate('components/home/view.html');
                            } 
                        },
                        error: function (erorr) {
@@ -296,11 +313,31 @@ var finishAddress = (function() {
                    
                        if (status.status == "OK") {
                            ShowSearchResults(status.places);
-                       } 
+                       } else if(status.status =="INVALID ACCESSTOKEN"){
+                               localStorage.removeItem("accessToken");
+                               localStorage.removeItem("userFirstName");
+                               
+                               localStorage.removeItem("user");
+                               localStorage.removeItem("userLastName");
+                               app.mobileApp.navigate('components/home/view.html');
+                           } 
                    },
                    error: function (erorr) {
                    }
                });
+    }
+    
+    function submit(){
+        $("#wrapper").attr("id", "wrapper2");
+       app.mobileApp.navigate('components/confirmingRequest/view.html');
+        
+    }
+    function getChosenAddress(){
+        return {
+            mainText: $("#finishAddressStreet").val(),
+            secondaryText: $("#finishAddressNumber").val(),
+            location: placeLocation
+        };
     }
     
     function liClicked(item) {
@@ -310,6 +347,7 @@ var finishAddress = (function() {
         if (element.childNodes[3].innerHTML == "street_address") {
             $("#finishAddressNumber").css("display", "none");
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
+            placeLocation = {lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)}
             isStreetNumberShown= true;  lastStreetNumber = "";
         } else if (element.childNodes[3].innerHTML == "route") {
             $("#finishAddressNumber").val("");
@@ -327,6 +365,7 @@ var finishAddress = (function() {
             lastStreetNumber = element.childNodes[1].innerHTML;
             isStreetNumberShown = false;
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
+            placeLocation = {lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)}
             console.log("3");
         }
         lastStreetAddress = element.childNodes[0].innerHTML;
@@ -341,7 +380,9 @@ var finishAddress = (function() {
         StreetKeyPressed: AddressKeyPressed,
         NumberKeyPressed: NumberKeyPressed,
         SearchPlace: SearchPlace,
-        liClicked: liClicked
+        liClicked: liClicked,
+        submit: submit,
+        getChosenAddress: getChosenAddress
         }
     
     })();

@@ -8,6 +8,7 @@ app.callTaxi = kendo.observable({
                                         startingAddress.setLocationInterval();
                                         loaded();
                                         staringAddressView = true;
+                                       
                                     },
                                     afterShow: function () {
                                     },
@@ -17,12 +18,16 @@ app.callTaxi = kendo.observable({
 var myScroll;
 var isInSearchingMode = false;
 var geoSuccessAtTheBeginning = false;
+var gotoViewName = "finishAddress";
 var backFunction = function() {
     if(isInSearchingMode){
         startingAddressFocusOut();
     }
 }
 function loaded() {
+    if($("#wrapper").length == 0){
+        $("#wrapper1").attr("id", "wrapper");
+    }
     try {
         myScroll.destroy();
     }catch (e) {
@@ -48,8 +53,11 @@ var startingAddress = (function() {
     var lastStreetAddress= "";
     var lastStreetNumber = "";
     var isStreetNumberShown = false;
+    var address;
+    var placeLocation; 
     
     function setLocationInterval() {
+        
         showError(languagePack[currentLanguage].searchingGPS);
         locationInterval =  navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
     }
@@ -108,6 +116,9 @@ var startingAddress = (function() {
             google.maps.event.addListener(map, "dragstart", function() {
                 $("#startingAddressStreet").blur();
                 $("#startingAddressNumber").blur();
+                
+                $(".address-form").slideUp(200);
+                $(".my-location-btn").fadeOut(200);
                 $(".centerMarker").css("display", "block");
                 resized = false;
                 marker.setMap(null);
@@ -137,6 +148,9 @@ var startingAddress = (function() {
                                                         icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"
                                                     });
                     $(".centerMarker").css("display", "none");
+                    
+                    $(".address-form").slideDown(200);
+                    $(".my-location-btn").fadeIn(200);
                     getAddress(map.getCenter().lat(), map.getCenter().lng());
                 }
             });
@@ -156,10 +170,18 @@ var startingAddress = (function() {
                            if (status.status == "OK") {
                                $("#startingAddressStreet").val(status.street_number + " " + status.street_address);
                                lastStreetAddress = status.street_number + " " + status.street_address;
+                                placeLocation = {lat: lat, lng: lng}
                                lastStreetNumber = "";
                                isStreetNumberShown = false;
                                $("#startingAddressNumber").css("display", "none");
                                $("#startingAddressNumber").attr("disabled", false);
+                           }else if(status.status =="INVALID ACCESSTOKEN"){
+                               localStorage.removeItem("accessToken");
+                               localStorage.removeItem("userFirstName");
+                               
+                               localStorage.removeItem("user");
+                               localStorage.removeItem("userLastName");
+                               app.mobileApp.navigate('components/home/view.html');
                            } 
                        },
                        error: function (erorr) {
@@ -303,7 +325,14 @@ var startingAddress = (function() {
                    
                        if (status.status == "OK") {
                            ShowSearchResults(status.places);
-                       } 
+                       } else if(status.status =="INVALID ACCESSTOKEN"){
+                               localStorage.removeItem("accessToken");
+                               localStorage.removeItem("userFirstName");
+                               
+                               localStorage.removeItem("user");
+                               localStorage.removeItem("userLastName");
+                               app.mobileApp.navigate('components/home/view.html');
+                           } 
                    },
                    error: function (erorr) {
                    }
@@ -316,6 +345,7 @@ var startingAddress = (function() {
         if (element.childNodes[3].innerHTML == "street_address") {
             $("#startingAddressNumber").css("display", "none");
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
+            placeLocation = {lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)}
             isStreetNumberShown= true;  lastStreetNumber = "";
         } else if (element.childNodes[3].innerHTML == "route") {
             $("#startingAddressNumber").val("");
@@ -332,6 +362,7 @@ var startingAddress = (function() {
             lastStreetNumber = element.childNodes[1].innerHTML;
             isStreetNumberShown = false;
             map.setCenter({lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)});
+            placeLocation = {lat: Number(element.childNodes[4].innerHTML), lng: Number(element.childNodes[5].innerHTML)}
             console.log("3");
         }
         lastStreetAddress=element.childNodes[0].innerHTML;
@@ -344,8 +375,21 @@ var startingAddress = (function() {
     
     function submit(){
          $("#wrapper").attr("id", "wrapper1");
-        app.mobileApp.navigate('components/finishAddress/view.html');
+        app.mobileApp.navigate('components/'+ gotoViewName+'/view.html');
+        
+        console.log(address);
     }
+    function getChosenAddress(){
+        return {
+            mainText: $("#startingAddressStreet").val(),
+            secondaryText: $("#startingAddressNumber").val(),
+            location: placeLocation
+        };
+    }
+    function gotoView(view){
+        gotoViewName = view;
+    }
+    
     return {
         setLocationInterval: setLocationInterval,
         setMap: setMap,
@@ -357,7 +401,9 @@ var startingAddress = (function() {
         SearchPlace: SearchPlace,
         liClicked: liClicked,
         submit: submit,
-        searchBtnClicked: searchBtnClicked
+        searchBtnClicked: searchBtnClicked,
+        getChosenAddress: getChosenAddress,
+        gotoView: gotoView
         }
     
     })();

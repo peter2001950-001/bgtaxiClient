@@ -16,6 +16,7 @@
 
     if (window.cordova) {
         document.addEventListener('deviceready', function () {
+            
             if (navigator && navigator.splashscreen) {
                 navigator.splashscreen.hide();
             }
@@ -96,6 +97,12 @@
 }());
 
 function logoutBtn() {
+     localStorage.removeItem("accessToken");
+                               localStorage.removeItem("userFirstName");
+                               
+                               localStorage.removeItem("user");
+                               localStorage.removeItem("userLastName");
+    
     $.ajax({
                url: "http://bgtaxi.net/Account/LogoutExternal?accessToken=" + getFromLocalStorage("accessToken"),
                type: "POST",
