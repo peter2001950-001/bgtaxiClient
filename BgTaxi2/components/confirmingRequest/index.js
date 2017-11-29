@@ -37,7 +37,7 @@ var confirmingRequest = (function() {
             $("#purchaseBtn").html("ОТКАЖИ");
           
             $.ajax({
-                       url: "http://localhost:35486/request/SendRequest",
+                       url: "http://bgtaxi.net/request/SendRequest",
                        type: "POST",
                        dataType: "json",
                        contentType: "application/json",
@@ -115,6 +115,7 @@ var confirmingRequest = (function() {
         pullInterval = setInterval(pull, 1800);
     }
     function pull() {
+        ;
         $.ajax({
                    url: "http://bgtaxi.net/request/clientPull",
                    type: "POST",
@@ -138,8 +139,9 @@ var confirmingRequest = (function() {
                                    if(firstTime){
                                        app.mobileApp.navigate("components/taxiMap/view.html");
                                        firstTime = false;
-                                       taxiMap.duration(Number(status.duration));
-                                       taxiMap.carNo(status.carNo);
+                                       taxiMap.setDurationValue(status.duration);
+                                       console.log(status.duration);
+                                       taxiMap.carNo = status.carNo;
                                    }
                                    taxiMap.setCarMarker({lat: status.carLat, lng: status.carLng});
                                    break;
@@ -173,7 +175,8 @@ var confirmingRequest = (function() {
                    error: function (erorr) {
                        $("#messageBox").html("Error");
                        alert("error: " + erorr);
-                   }
+                   },
+                    global: false
                });
     }
     function stopPull() {

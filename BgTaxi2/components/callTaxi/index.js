@@ -382,6 +382,8 @@ var startingAddress = (function() {
         app.mobileApp.navigate('components/'+ gotoViewName+'/view.html');
         clearLocationInterval();
         console.log(address);
+        localStorage.setItem("startingAddressLat", placeLocation.lat);
+        localStorage.setItem("startingAddressLng", placeLocation.lng);
     }
     function getChosenAddress(){
         return {

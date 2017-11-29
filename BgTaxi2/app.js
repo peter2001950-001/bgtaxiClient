@@ -121,15 +121,18 @@ function logoutBtn() {
                }
            });
 }
-
+ajaxSettings();
+function ajaxSettings(){
 $(document).ajaxStart(function() {
     $("#appDrawer").data("kendoMobileDrawer").hide();
     $(".popup-loading").css("display", "block");
 });
+
 $(document).ajaxComplete(function() {
     $("#appDrawer").data("kendoMobileDrawer").hide();
     $(".popup-loading").css("display", "none");
 });
+    }
 
 function getFromLocalStorage(key) {
     return localStorage.getItem(key);

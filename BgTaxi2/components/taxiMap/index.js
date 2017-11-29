@@ -2,11 +2,10 @@
 
 app.taxiMap = kendo.observable({
                                    onShow: function () {
-                                       $("#startingSecontaryText").css("display", "block");
-                                       $("#finishSecontaryText").css("display", "block");
-                                       confirmingRequest.writeAddresses();
-                                       $("#carNoText").value(taxiMap.carNo);
+                                      taxiMap.setMap();
+                                       $("#carNoText").val(taxiMap.carNo);
                                        taxiMap.setCountDown();
+                                       taxiMap.setLocationInterval();
                                    },
                                    afterShow: function () {
                                    },
@@ -21,7 +20,10 @@ var taxiMap = (function() {
     var minutes = 0;
     var stopwatch;
     var seconds = 0;
-    
+    var map;
+    var bounds;
+      var requestMarker
+    var first = true;
     
     function setLocationInterval() {
         locationInterval = navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
@@ -30,28 +32,23 @@ var taxiMap = (function() {
         navigator.geolocation.clearWatch(locationInterval);   
     }
     function setCountDown(){
+        console.log(durationValue);
         var stopwatch = setInterval(function(){
             durationValue--;
-               if(durationValue%60 >30){
-                  minutes =  durationValue/60 + 1;
-               }else{
-                   minutes = durationValue/60
-               }
+            console.log(durationValue);
+            console.log(minutes);
+              minutes = Math.round(durationValue/60);
             if(minutes==1){
-                $("#durationText").value(minutes + " минута");
+                $("#durationText").val(minutes + " минута");
             }else if(minutes> 1){
-                 $("#durationText").value(minutes + " минути");
+                 $("#durationText").val(minutes + " минути");
             }else{
-                 $("#durationText").value("след по-малко от минута");
+                 $("#durationText").val("след по-малко от минута");
             }
         }, 1000);
     }
     function geoSuccess(position) {
-        if (noGPS) {
-            showError(languagePack[currentLanguage].foundGPS, "success");
-            noGPS = false;
-        }
-        console.log(position);
+       
         localStorage.setItem("geoLat", position.coords.latitude);
         localStorage.setItem("geoLng", position.coords.longitude);
    
@@ -59,12 +56,16 @@ var taxiMap = (function() {
             currentLocationMarker.setMap(null);
         }catch (e) {
         }
+        if(map!=undefined){
         currentLocationMarker = new google.maps.Marker({
                                                            position: {lat:  position.coords.latitude, lng: position.coords.longitude}, 
                                                            map: map,
                                                            icon: {url: "http://bgtaxi.net/blueDot1.png", scaledSize: new google.maps.Size(60, 60), anchor: new google.maps.Point(30, 30) },
                                                            zIndex: 0
                                                        });
+            }else{
+                  console.log("Map undefined 2");
+            }
         
         if (!geoSuccessAtTheBeginning) {
             geoSuccessAtTheBeginning = true;
@@ -73,48 +74,57 @@ var taxiMap = (function() {
         }
     }
     function setCarMarker(carLocation){
+        console.log(carLocation);
         try{
             carMarker.setMap(null);
-        }catch(e){
-              carMarker = new google.maps.Marker({
+            bounds = new google.maps.LatLngBounds();
+        }catch(e){}
+        
+            if(map!=undefined){  
+            carMarker = new google.maps.Marker({
                                                            position: {lat:  carLocation.lat, lng: carLocation.lng}, 
                                                            map: map,
-                                                           icon: {url: "/images/carIcon.png", scaledSize: new google.maps.Size(60, 60), anchor: new google.maps.Point(30, 30) },
+                                                           icon: {url: "/images/carIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(60, 45) },
                                                            zIndex: 0
                                                        });
-        }
+                if(first){
+                     bounds.extend(carMarker.getPosition());
+                bounds.extend(requestMarker.getPosition());
+                map.fitBounds(bounds);
+                    first  = false;
+                }
+              
+                }else{
+                    console.log("Map undefined 1");
+                }
+        
     }
     function geoError() {
-        if (!noGPS) {
+        i
             showError(languagePack[currentLanguage].noGPS, "error");
-            noGPS = true;
             currentLocationMarker.setMap(null);
-        }
+        
     }
     function setMap() {
-        var uluru ;
-        if (getFromLocalStorage("geoLat") != undefined) {
-            var lat = getFromLocalStorage("geoLat");
-            var lng = getFromLocalStorage("geoLng");
-        
-            getAddress(lat, lng);
-            uluru = {lat: Number(lat) , lng: Number(lng)};
-            console.log(uluru);
-            map = new google.maps.Map(document.getElementById('map'), {
+        var requestLocation = {lat:  Number(localStorage.getItem("startingAddressLat")), lng:  Number(localStorage.getItem("startingAddressLng"))}
+         
+            map = new google.maps.Map(document.getElementById('map1'), {
                                           zoom: 16,
-                                          center: uluru,
+                                          center: requestLocation,
                                           fullscreenControl: false,
                                           mapTypeControl: false
                                       });  
-            var requestLocation = {lat: startingAddress.placeLocation.lat, lng: startingAddress.placeLocation.lng}
-            var requestMarker = new google.maps.Marker({
+           console.log("map Initialised - ");
+        console.log(map);
+            requestMarker = new google.maps.Marker({
                                                            position: {lat:  requestLocation.lat, lng: requestLocation.lng}, 
                                                            map: map,
-                                                           icon: {url: "/images/personIcon.png", scaledSize: new google.maps.Size(60, 60), anchor: new google.maps.Point(30, 30) },
+                                                           icon: {url: "/images/personIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(30, 30) },
                                                            zIndex: 0
                                                        });
-            }
-    
+         
+            bounds =  new google.maps.LatLngBounds();
+       
           
     }
     function onAddress(){
@@ -125,15 +135,18 @@ var taxiMap = (function() {
     function setMyLocation() {
         map.setCenter({lat: Number(getFromLocalStorage("geoLat")), lng: Number(getFromLocalStorage("geoLng"))});
     }
+    function setDurationValue(value){
+        durationValue = Number(value);
+    }
     
     return {
         setLocationInterval: setLocationInterval,
-        carLocation: carLocation,
         setMyLocation: setMyLocation,
         carNo: carNo,
-        duration: durationValue,
         setCountDown: setCountDown, 
         onAddress: onAddress,
-        setCarMarker: setCarMarker
+        setCarMarker: setCarMarker,
+        setMap: setMap,
+        setDurationValue: setDurationValue
     }
 })();
