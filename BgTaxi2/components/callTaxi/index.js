@@ -59,10 +59,14 @@ var startingAddress = (function() {
     function setLocationInterval() {
         
         showError(languagePack[currentLanguage].searchingGPS);
-        locationInterval =  navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
+        locationInterval = navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
+    }
+    function clearLocationInterval(){
+        navigator.geolocation.clearWatch(locationInterval);
     }
 
     function geoSuccess(position) {
+        console.log("starting");
         if (noGPS) {
             showError(languagePack[currentLanguage].foundGPS, "success");
             noGPS = false;
@@ -376,7 +380,7 @@ var startingAddress = (function() {
     function submit(){
          $("#wrapper").attr("id", "wrapper1");
         app.mobileApp.navigate('components/'+ gotoViewName+'/view.html');
-        
+        clearLocationInterval();
         console.log(address);
     }
     function getChosenAddress(){

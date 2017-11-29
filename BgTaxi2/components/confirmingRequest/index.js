@@ -13,6 +13,7 @@ app.confirmingRequest = kendo.observable({
 var confirmingRequest = (function() {
     var pullInterval;
     var purchaseMode = true;
+    var firstTime = true;
     function writeAddresses() {
         console.log(startingAddress.address);
         if (startingAddress.getChosenAddress().secondaryText == "") {
@@ -78,7 +79,7 @@ var confirmingRequest = (function() {
             $("#purchaseBtn").html("ПОРЪЧАЙ");
             $("#SendRequestLoading").css("display", "none");
             $.ajax({
-                       url: "http://localhost:35486/request/cancelRequest",
+                       url: "http://bgtaxi.net/request/cancelRequest",
                        type: "POST",
                        dataType: "json",
                        contentType: "application/json",
@@ -115,7 +116,7 @@ var confirmingRequest = (function() {
     }
     function pull() {
         $.ajax({
-                   url: "http://localhost:35486/request/clientPull",
+                   url: "http://bgtaxi.net/request/clientPull",
                    type: "POST",
                    dataType: "json",
                    contentType: "application/json",
@@ -134,7 +135,13 @@ var confirmingRequest = (function() {
                                    $("#purchaseBtn").prop("disable", true);
                                    break;
                                case 1:
-                                   //taken
+                                   if(firstTime){
+                                       app.mobileApp.navigate("components/taxiMap/view.html");
+                                       firstTime = false;
+                                       taxiMap.duration(Number(status.duration));
+                                       taxiMap.carNo(status.carNo);
+                                   }
+                                   taxiMap.setCarMarker({lat: status.carLat, lng: status.carLng});
                                    break;
                                case 2:
                                    $("#loadingText").html("Не е намерена кола в района.");

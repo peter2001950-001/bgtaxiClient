@@ -5,7 +5,7 @@ app.finishAddress = kendo.observable({
                                         document.addEventListener("backbutton", backFunction); 
                                         $(".my-location-btn").css("bottom", document.getElementsByClassName("address-form")[0].offsetHeight + 10 + "px");
                                         finishAddress.setMap();
-                                       // finishAddress.setLocationInterval();
+                                       finishAddress.setLocationInterval();
                                         staringAddressView = false;
                                         loaded1();
                                         $("#finishAddressStreet").val("");
@@ -51,12 +51,14 @@ var finishAddress = (function() {
     var placeLocation;
     function setLocationInterval() {
         showError(languagePack[currentLanguage].searchingGPS);
-        locationInterval = setInterval(function() {
-            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, {enableHighAccuracy: true, timeout: 15000 });
-        }, 3000);
+        locationInterval = navigator.geolocation.watchPosition(geoSuccess, geoError, {enableHighAccuracy: true });
+    }
+    function clearLocationInterval(){
+        navigator.geolocation.clearWatch(locationInterval);
     }
 
     function geoSuccess(position) {
+         console.log("finish");
         if (noGPS) {
             showError(languagePack[currentLanguage].foundGPS, "success");
             noGPS = false;
@@ -329,6 +331,7 @@ var finishAddress = (function() {
     
     function submit(){
         $("#wrapper").attr("id", "wrapper2");
+        clearLocationInterval();
        app.mobileApp.navigate('components/confirmingRequest/view.html');
         
     }

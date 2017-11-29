@@ -1,0 +1,17 @@
+<div data-role="view" data-title="ВАШАТА КОЛА" data-layout="main" data-model="app.taxiMap" data-show="app.taxiMap.onShow"
+     data-after-show="app.taxiMap.afterShow"  id="taxiMapScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
+
+    <div id="map"></div>
+    <div class="error-message">Грешка.....</div>
+      <div class="my-location-btn" onclick="startingAddress.setMyLocation()">
+        <img src="images/my_location_48px.png">
+    </div>
+    <div class="address-form">
+        <h3 id="taxiMap-firstText">ВАШАТА КОЛА ЩЕ ПРИСТИГНЕ СЛЕД</h3>
+    <input id="durationText" class="form-text" type="text" value= "Изчислява се ..." />
+          <h3 id="taxiMap-secondText">РЕГИСТРАЦИОНЕН НОМЕР НА АВТОМОБИЛА Е</h3>
+        <input id="carNoText" class="form-text" type="text" value= "Изчислява се ..." />
+        
+    </div>
+
+    </div>
