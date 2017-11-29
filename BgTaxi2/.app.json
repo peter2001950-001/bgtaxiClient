@@ -58,6 +58,7 @@
           "editScreenHeaderSource": "static",
           "editScreenHeaderValue": "Edit",
           "deleteItemButton": false,
+          "deleteItemConfirmation": true,
           "pullToRefresh": false,
           "endlessScroll": false,
           "isMapView": true,
@@ -79,10 +80,10 @@
     {
       "type": "kendo-ui-mobile:dataProvider",
       "name": "bgTaxi2",
-      "title": "BgTaxi2 / BgTaxi2",
       "source": "everlive",
       "everliveKey": "7vf8m4trbsidtqjk",
-      "offlineStorage": true
+      "offlineStorage": true,
+      "title": "BgTaxi2 / BgTaxi2"
     }
   ],
   "name": "kendoUiMobileApp",

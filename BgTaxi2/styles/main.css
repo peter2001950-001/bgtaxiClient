@@ -159,6 +159,7 @@
 #kendoUiMobileApp .imageListItem {
     overflow: hidden;
     width: 100%;
+    margin: 0;
 }
 
 #kendoUiMobileApp.km-ios7 .button-group .km-button.primary {
@@ -187,6 +188,59 @@ Fields
 
 #kendoUiMobileApp label.field {
     display: block;
+}
+
+
+/*Image Gallery field*/
+
+#kendoUiMobileApp .field--gallery .field__label {
+    margin-bottom: 0.5em;
+}
+
+#kendoUiMobileApp .field--gallery .field__content {
+    list-style-type: none;
+    padding: 0 0 1px 0;
+}
+
+#kendoUiMobileApp .field--gallery .field__content .km-virtual-page {
+    bottom: 0;
+    margin-right: 1px;
+}
+
+#kendoUiMobileApp .field--gallery .field__content .gallery__items {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#kendoUiMobileApp .field--gallery .field__content .gallery__items img {
+    max-height: 100%;
+}
+
+#kendoUiMobileApp .field--gallery:not(.field--gallery-slider) .field__content .gallery__items {
+    position: relative;
+    margin-bottom: 1em;
+}
+
+#kendoUiMobileApp .field--gallery:not(.field--gallery-slider) .field__content .gallery__items:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    bottom: -0.5em;
+    content: "";
+}
+
+#kendoUiMobileApp .field--gallery:not(.field--gallery-slider) .field__content .gallery__items:last-child:after {
+    display: none;
 }
 
 
@@ -226,34 +280,59 @@ Fields
 /*Header flex box */
 
 #kendoUiMobileApp .km-header .km-navbar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-flex-flow: row;
+    -ms-flex-flow: row;
+    flex-flow: row;
+    -webkit-box-orient: horizontal;
 }
 
 #kendoUiMobileApp .km-header .km-rightitem,
 #kendoUiMobileApp .km-header .km-leftitem {
     position: static;
+    -webkit-box-flex: none;
+    -webkit-flex: none;
+    -ms-flex: none;
     flex: none;
 }
 
 #kendoUiMobileApp .km-header .km-leftitem {
+    -webkit-box-ordinal-group: 1;
+    -ms-flex-order: 1;
+    -webkit-order: 1;
     order: 1;
 }
 
 #kendoUiMobileApp .km-header .km-leftitem + .km-view-title {
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 2;
+    -webkit-order: 2;
     order: 2;
 }
 
 #kendoUiMobileApp .km-header .km-rightitem {
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 3;
+    -webkit-order: 3;
     order: 3;
 }
 
 #kendoUiMobileApp .km-header .km-view-title {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: center;
     display: block;
+    -webkit-box-ordinal-group: 1;
+    -ms-flex-order: 1;
+    -webkit-order: 1;
     order: 1;
 }
 
@@ -340,7 +419,7 @@ Fields
     cursor: pointer;
 }
 
-#kendoUiMobileApp .file-upload-name {
+#kendoUiMobileApp .field__content-info {
     display: block;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -401,21 +480,33 @@ Fields
 }
 
 #kendoUiMobileApp .multiple-select-modal-window .km-content .km-scroll-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-flex-flow: column nowrap;
+    -ms-flex-flow: column nowrap;
     flex-flow: column nowrap;
     height: 100%;
+    -webkit-box-orient: vertical;
 }
 
 #kendoUiMobileApp .multiple-select-modal-window .multiple-select-item-content {
     margin-bottom: 2rem;
     overflow: hidden;
     overflow-y: auto;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     padding-top: 0.5rem;
 }
 
 #kendoUiMobileApp .multiple-select-modal-window .multiple-select-item-buttons {
     text-align: right;
+    -webkit-box-flex: none;
+    -webkit-flex: none;
+    -ms-flex: none;
     flex: none;
 }
 
@@ -474,6 +565,468 @@ Fields
     height: 300px;
 }
 
+
+/*Custom notification*/
+
+#kendoUiMobileApp .notify-pop-up {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 65px;
+    z-index: 999;
+    text-align: center;
+    display: none;
+}
+
+#kendoUiMobileApp .notify-pop-up__content {
+    display: inline-block;
+    color: #fff;
+    padding: 20px 30px;
+    background: #606060;
+    border-radius: 30px;
+    font-size: 1.2em;
+}
+
+.nav_searchBtn{
+    height: 34px;
+    float:right;
+    margin-top: 7px;
+    margin-right: 10px;
+}
+.nav_backBtn{
+    height: 34px;
+    float:left;
+    margin-top: 7px;
+    margin-right: 10px;
+    display:none;
+}
+
+ /* Map Center Marker*/
+
+
+#map .centerMarker {
+  position: absolute;
+  /*url of the marker*/
+  background: url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+  /*center the marker*/
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  /*fix offset when needed*/
+  margin-left: -10px;
+  margin-top: -34px;
+  /*size of the image*/
+  height: 34px;
+  width: 20px;
+  cursor: pointer;
+}
+
+#finishAddress-map .centerMarker{
+      position: absolute;
+  /*url of the marker*/
+  background: url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+  /*center the marker*/
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  /*fix offset when needed*/
+  margin-left: -10px;
+  margin-top: -34px;
+  /*size of the image*/
+  height: 34px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.form-control{
+    margin: 0.5vh;
+}
+/* Address Form **/
+
+.address-form{
+
+    overflow: hidden;
+    width: 100vw;
+    position: absolute;
+    bottom: 6px;
+    background:rgba(255,255,255,0.8);
+     transition:all 1s linear;
+    z-index:3;
+}
+.address-form h3{
+    font-size: 5vw;
+    text-align: center;
+}
+.address-form h5{
+    font-size: 4vw;
+    text-align: center;
+    
+}
+#map{
+    width:100%; height: 88vh;
+}
+
+#finishAddress-map{
+    width:100%; height: 88vh;
+}
+.form-text{
+    width:100%;
+        box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: 0;
+    display: block;
+    padding: 7px;
+    border: 0;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 5px;
+    font: 16px Arial,Helvetica,sans-serif;
+    height: 38px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+.form-textarea{
+    width: 95vw !important; height:8vh !important; resize: none !important;
+}
+.form-btn{
+    background: #ffd428;  width: 95vw;
+    margin: 0 2.5vw ;
+}
+
+.error-message{
+    background-color: rgba(255,0,12,0.7);
+    position: absolute;
+    top: 0px;
+    width: 100vw;
+    padding: 4px;
+    text-align: center;
+    color: White;
+    display:none;
+    
+}
+.my-location-btn{
+       position: absolute;
+    background: #ffd428;
+    bottom: 38vh;
+    left: 15px;
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    padding: 5px;
+}
+.my-location-btn img{
+   width: 100%;
+}
+
+.input {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	margin: 0.6em 1em;
+	max-width: 350px;
+	width: calc(100% - 2em);
+	vertical-align: top;
+}
+
+
+/*Search input*/
+
+
+.search-submit-btn{
+    float:left;
+    background: #FFFFFF;
+    width: 20%;
+    display: none;
+    height: 41px;
+    border-radius: 0 !important;
+        border: 2px solid #CBCBCB !important;
+    padding: 1px !important;
+    color: #737272 !important;
+}
+.input__field {
+	position: relative;
+	display: block;
+	float: left;
+	padding: 0.8em;
+	width: 60%;
+	border: none;
+	border-radius: 0;
+	background: #f0f0f0;
+	color: #aaa;
+	font-weight: 400;
+        margin-bottom: 10px;
+	font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	-webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+
+.input__field:focus {
+	outline: none;
+
+    }
+.input__label {
+	display: inline-block;
+	float: right;
+	padding: 0 1em;
+	width: 40%;
+	color: #696969;
+	font-weight: bold;
+	font-size: 70.25%;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.input__label-content {
+	position: relative;
+	display: block;
+	padding: 1.6em 0;
+	width: 100%;
+}
+.input--makiko {
+	overflow: hidden;
+	
+}
+
+.input__field--makiko {
+	width: 100%;
+	background: #CBCBCB;
+	color: #797693;
+	z-index: 10;
+	font-weight: 500;
+    text-align:center;
+}
+
+.input__label--makiko {
+	position: absolute;
+	width: 100%;
+	text-align: left;
+	pointer-events: none;
+	color: #fff;
+}
+
+
+
+
+.toggle-button {
+  position: relative;
+  display: inline-block;
+  color: #fff; }
+  .toggle-button label {
+    display: inline-block;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left; }
+  .toggle-button input {
+    display: none; }
+  .toggle-button__icon {
+    cursor: pointer;
+    pointer-events: none; }
+    .toggle-button__icon:before, .toggle-button__icon:after {
+      content: "";
+      position: absolute;
+      top: 45%;
+      left: 35%;
+      transition: 0.2s ease-out; }
+
+/*
+ * Toggle button variables
+ */
+/*
+ * Toggle button styles
+ */
+.toggle-button--aava label {
+  height: 30px;
+  line-height: 30px;
+  transition: all 0.2s;
+  border-radius: 2rem;     font-size: 14px; }
+  .toggle-button--aava label:before, .toggle-button--aava label:after {
+    position: absolute;
+    right: 1.5rem;
+    transition: all 0.2s .1s ease-out; }
+  .toggle-button--aava label:before {
+    content: attr(data-on-text); }
+  .toggle-button--aava label:after {
+    content: attr(data-off-text); }
+
+.toggle-button--aava input[type=checkbox] + label {
+  width: 120px;
+  background: #FF5335; }
+  .toggle-button--aava input[type=checkbox] + label:before {
+    opacity: 0;
+    transform: translate(0, 20px); }
+  .toggle-button--aava input[type=checkbox] + label:after {
+    opacity: 1;
+    transform: translate(0, 0); }
+
+.toggle-button--aava input[type=checkbox]:checked ~ label {
+  width: 120px;
+  background: #61B136; }
+  
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:before {
+  transform: translate(-10%, 100%) rotate(45deg);
+  width: 16.66667px; }
+
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:after {
+  transform: translate(30%) rotate(-45deg); }
+
+.toggle-button--aava .toggle-button__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 30px;
+  width: 30px; }
+  .toggle-button--aava .toggle-button__icon:before, .toggle-button--aava .toggle-button__icon:after {
+    height: 3px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); }
+  .toggle-button--aava .toggle-button__icon:before {
+    width: 25px;
+    transform: rotate(45deg); }
+  .toggle-button--aava .toggle-button__icon:after {
+    width: 25px;
+    transform: rotate(-45deg); }
+.toggle-button-group{
+    margin: 0 10px;
+    }
+
+
+/*Places Suggestions */
+
+#wrapper{
+     background: rgba(245, 211, 43, 0.45);
+    }
+.places-div{
+    display:none;
+}
+.places-div ul{
+     background: rgba(245, 211, 43, 0.45);
+    
+    width: 100vw;
+    padding: 0;
+}
+
+.places-div ul li{
+    
+    padding: 15px;
+    list-style: none;
+    background: rgba(245, 211, 43, 0.6);
+    
+}
+.places-div ul li.odd{
+    background:rgba(197, 166, 12, 0.51);
+    
+    }
+
+
+.places-div li span.places-main-text{
+        font-size: 4.8vw;
+    font-weight: bold;
+}
+.places-div li span.places-secondary-text{
+    
+          font-style: italic;
+    font-size: 3.8vw;
+       display: block;
+    
+    }
+
+
+
+/**Confirming View**/
+
+.confirm-item{
+         /* background: rgba(191, 190, 190, 0.21); */
+    padding: 10px 3%;
+    clear: both;
+    display: block;
+    border-bottom-color: #B5B5B5;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    /* border: 1px solid; */
+    /* padding-bottom: 5px; */
+    margin: 0 10px;
+}
+.confirm-item-icon-div{
+        width: 7vh;
+    float: left;
+    padding: 1.5vh .6vh;
+    margin-right: 4%;
+
+}
+.confirm-item-icon{
+    width: 100%;
+    
+}
+.confirm-group{
+    background: rgba(191, 190, 190, 0.21);
+}
+.confirm-item-main-text{
+        font-weight: bold !important;
+    font-size: 2.6vh !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 2.3vh !important;
+}
+.confirm-text-group::after{
+  clear:both;
+    display: block;
+    content: "";
+}
+.confirm-item-icon-div::after{
+    clear:both;
+    display: block;
+    content: "";
+}
+#purchaseBtn{
+    position: absolute;
+    bottom: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
+}
+
+.cancel-btn{
+    background: #ff2828;
+    color: White;   
+    width: 95vw;
+    margin: 0 2.5vw;
+    
+    
+}
+
+@media screen and (max-height: 530px){
+   .confirm-item-main-text{
+    font-size: 3vh !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 2.5vh !important;
+} 
+   .confirm-item-icon-div{
+        width: 6.5vh;
+        } 
+    }
+@media screen and (min-heignt: 700px){
+    
+     .confirm-item-main-text{
+    font-size: 20px !important;
+}
+
+.confirm-item-secondary-text{
+    font-size: 17px !important;
+} 
+    .confirm-item{
+        height: 120px !important;
+    }
+}
 
 /* START_CUSTOM_CODE_kendoUiMobileApp */
 
