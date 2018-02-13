@@ -1,15 +1,12 @@
 <div data-role="view" data-title="ВАШАТА КОЛА" data-layout="main" data-model="app.taxiMap" data-show="app.taxiMap.onShow"
      data-after-show="app.taxiMap.afterShow"  id="taxiMapScreen" class="screen" data-use-native-scrolling="true" style = "overflow: hidden !important;  ">
 
-    <div id="map1" style="width:100%; height: 88vh"></div>
+    <div id="map1" style="width:100%; height: 79vh"></div>
     <div class="error-message">Грешка.....</div>
      
     <div class="address-form">
-        <h3 id="taxiMap-firstText">ВАШАТА КОЛА ЩЕ ПРИСТИГНЕ СЛЕД</h3>
+        <h3 id="taxiMap-firstText" style="padding: 0 10px">Вашата кола е регистрационен номер <strong id="carNoText"></strong> и ще пристигне приблизително след </h3>
     <input id="durationText" class="form-text" type="text" value= "Изчислява се ..." />
-          <h3 id="taxiMap-secondText">РЕГИСТРАЦИОНЕН НОМЕР НА АВТОМОБИЛА Е</h3>
-        <input id="carNoText" class="form-text" type="text" value= "Изчислява се ..." />
-        
     </div>
 
     </div>

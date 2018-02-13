@@ -2,6 +2,10 @@
 
 app.callTaxi = kendo.observable({
                                     onShow: function () {
+                                        if(localStorage.getItem("activeRequest") == "true"){
+                                            confirmingRequest.startPull();
+                                             app.mobileApp.navigate('components/confirmingRequest/view.html');
+                                        }
                                         document.addEventListener("backbutton", backFunction); 
                                         $(".my-location-btn").css("bottom", document.getElementsByClassName("address-form")[0].offsetHeight + 10 + "px");
                                         startingAddress.setMap();
@@ -112,7 +116,8 @@ var startingAddress = (function() {
                                           zoom: 17,
                                           center: uluru,
                                           fullscreenControl: false,
-                                          mapTypeControl: false
+                                          mapTypeControl: false,
+                                          gestureHandling: "greedy"
                                       });  
     
             $('<div/>').addClass('centerMarker').appendTo(map.getDiv());
@@ -384,6 +389,8 @@ var startingAddress = (function() {
         console.log(address);
         localStorage.setItem("startingAddressLat", placeLocation.lat);
         localStorage.setItem("startingAddressLng", placeLocation.lng);
+       localStorage.setItem("startingAddressMainText", getChosenAddress().mainText);
+        localStorage.setItem("startingAddressSecondaryText", getChosenAddress().secondaryText);
     }
     function getChosenAddress(){
         return {

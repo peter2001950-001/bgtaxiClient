@@ -3,8 +3,7 @@
 app.taxiMap = kendo.observable({
                                    onShow: function () {
                                       taxiMap.setMap();
-                                       $("#carNoText").val(taxiMap.carNo);
-                                       taxiMap.setCountDown();
+                                       $("#carNoText").html(taxiMap.carNo);
                                        taxiMap.setLocationInterval();
                                    },
                                    afterShow: function () {
@@ -31,22 +30,7 @@ var taxiMap = (function() {
     function clearLocationInterval() {
         navigator.geolocation.clearWatch(locationInterval);   
     }
-    function setCountDown(){
-        console.log(durationValue);
-        var stopwatch = setInterval(function(){
-            durationValue--;
-            console.log(durationValue);
-            console.log(minutes);
-              minutes = Math.round(durationValue/60);
-            if(minutes==1){
-                $("#durationText").val(minutes + " минута");
-            }else if(minutes> 1){
-                 $("#durationText").val(minutes + " минути");
-            }else{
-                 $("#durationText").val("след по-малко от минута");
-            }
-        }, 1000);
-    }
+ 
     function geoSuccess(position) {
        
         localStorage.setItem("geoLat", position.coords.latitude);
@@ -84,7 +68,7 @@ var taxiMap = (function() {
             carMarker = new google.maps.Marker({
                                                            position: {lat:  carLocation.lat, lng: carLocation.lng}, 
                                                            map: map,
-                                                           icon: {url: "/images/carIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(60, 45) },
+                                                           icon: {url: "http://bgtaxi.net/carIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(60, 45) },
                                                            zIndex: 0
                                                        });
                 if(first){
@@ -112,14 +96,15 @@ var taxiMap = (function() {
                                           zoom: 16,
                                           center: requestLocation,
                                           fullscreenControl: false,
-                                          mapTypeControl: false
+                                          mapTypeControl: false,
+                                          gestureHandling: "greedy"
                                       });  
            console.log("map Initialised - ");
         console.log(map);
             requestMarker = new google.maps.Marker({
                                                            position: {lat:  requestLocation.lat, lng: requestLocation.lng}, 
                                                            map: map,
-                                                           icon: {url: "/images/personIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(30, 30) },
+                                                           icon: {url: "http://bgtaxi.net/personIcon.png", scaledSize: new google.maps.Size(45, 60), anchor: new google.maps.Point(30, 30) },
                                                            zIndex: 0
                                                        });
          
@@ -137,13 +122,22 @@ var taxiMap = (function() {
     }
     function setDurationValue(value){
         durationValue = Number(value);
+        minutes = Math.round(durationValue/60);
+        console.log(minutes);
+            if(minutes==1){
+                $("#durationText").val(minutes + " минута");
+            }else if(minutes> 1){
+                 $("#durationText").val(minutes + " минути");
+            }else{
+                 $("#durationText").val("след по-малко от минута");
+            }
+        
     }
     
     return {
         setLocationInterval: setLocationInterval,
         setMyLocation: setMyLocation,
         carNo: carNo,
-        setCountDown: setCountDown, 
         onAddress: onAddress,
         setCarMarker: setCarMarker,
         setMap: setMap,

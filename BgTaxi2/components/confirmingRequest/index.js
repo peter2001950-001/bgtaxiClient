@@ -14,28 +14,30 @@ var confirmingRequest = (function() {
     var pullInterval;
     var purchaseMode = true;
     var firstTime = true;
+    var case2 = false;
     function writeAddresses() {
-        console.log(startingAddress.address);
-        if (startingAddress.getChosenAddress().secondaryText == "") {
+      
+        
+        if (localStorage.getItem("startingAddressSecondaryText") == "") {
             $("#startingMainText").css("margin", "4vh 0");
             $("#startingSecontaryText").css("display", "none");
         }
-        if (finishAddress.getChosenAddress().secondaryText == "") {
+        if (localStorage.getItem("finishAddressSecondaryText") == "") {
             $("#finishMainText").css("margin", "4vh 0");
             $("#finishSecontaryText").css("display", "none");
         }
-        $("#startingMainText").html(startingAddress.getChosenAddress().mainText);
-        $("#startingSecontaryText").html(startingAddress.getChosenAddress().secondaryText);
+        $("#startingMainText").html(localStorage.getItem("startingAddressMainText"));
+        $("#startingSecontaryText").html(localStorage.getItem("startingAddressSecondaryText"));
         
-        $("#finishMainText").html(finishAddress.getChosenAddress().mainText);
-        $("#finishSecontaryText").html(finishAddress.getChosenAddress().secondaryText);
+        $("#finishMainText").html(localStorage.getItem("finishAddressMainText"));
+        $("#finishSecontaryText").html(localStorage.getItem("finishAddressSecondaryText"));
     }
     function sendRequest() {
         if (purchaseMode) {
             $("#purchaseBtn").removeClass("form-btn");
             $("#purchaseBtn").addClass("cancel-btn");
             $("#purchaseBtn").html("ОТКАЖИ");
-          
+              
             $.ajax({
                        url: "http://bgtaxi.net/request/SendRequest",
                        type: "POST",
@@ -43,14 +45,14 @@ var confirmingRequest = (function() {
                        contentType: "application/json",
                        data: JSON.stringify({
                                                 "accessToken": getFromLocalStorage("accessToken"),
-                                                "startingAddressMainText": startingAddress.getChosenAddress().mainText,
-                                                "startingAddressSecondaryText": startingAddress.getChosenAddress().secondaryText,
-                                                "startingAddressLocationLat": startingAddress.getChosenAddress().location.lat,
-                                                "startingAddressLocationLng": startingAddress.getChosenAddress().location.lng,
-                                                "finishAddressMainText": finishAddress.getChosenAddress().mainText,
-                                                "finishAddressSecondaryText": finishAddress.getChosenAddress().secondaryText,
-                                                "finishAddressLocationLat": finishAddress.getChosenAddress().location.lat,
-                                                "finishAddressLocationLng": finishAddress.getChosenAddress().location.lng
+                                                "startingAddressMainText": localStorage.getItem("startingAddressMainText"),
+                                                "startingAddressSecondaryText": localStorage.getItem("startingAddressSecondaryText"),
+                                                "startingAddressLocationLat": localStorage.getItem("startingAddressLat"),
+                                                "startingAddressLocationLng":localStorage.getItem("startingAddressLng"),
+                                                "finishAddressMainText": localStorage.getItem("finishAddressMainText"),
+                                                "finishAddressSecondaryText": localStorage.getItem("finishAddressSecondaryText"),
+                                                "finishAddressLocationLat": localStorage.getItem("finishAddressLat"),
+                                                "finishAddressLocationLng":localStorage.getItem("finishAddressLng")
                             
                                             }),
                        success: function (status) {
@@ -59,7 +61,7 @@ var confirmingRequest = (function() {
                                $("#SendRequestLoading").css("display", "block");
                                 $("#loader").css("display", "block");
                                purchaseMode = false;
-                              
+                                  localStorage.setItem("activeRequest", true);
                                startPull();
                            }else {
                                $("#purchaseBtn").addClass("form-btn");
@@ -132,26 +134,29 @@ var confirmingRequest = (function() {
                            switch (status.code) {
                                case 0:
                                    $("#loadingText").html("Намерена е кола! Моля, изчакайте за отговор ...");
-                                   $("#loader").css("display", "none");
+                                 
                                    $("#purchaseBtn").prop("disable", true);
                                    break;
                                case 1:
+                               app.mobileApp.navigate("components/taxiMap/view.html");
                                    if(firstTime){
-                                       app.mobileApp.navigate("components/taxiMap/view.html");
+                                       
                                        firstTime = false;
-                                       taxiMap.setDurationValue(status.duration);
                                        console.log(status.duration);
                                        taxiMap.carNo = status.carNo;
-                                   }
+                                   } 
+                               taxiMap.setDurationValue(status.duration);
                                    taxiMap.setCarMarker({lat: status.carLat, lng: status.carLng});
                                    break;
                                case 2:
+                               
                                    $("#loadingText").html("Не е намерена кола в района.");
                                    $("#loader").css("display", "none");
                                    $("#purchaseBtn").prop("disable", false);
                                    $("purchaseBtn").removeClass("form-btn");
                                    $("purchaseBtn").addClass("cancel-btn");
                                    $("purchaseBtn").html("ПОВТОРЕН ОПИТ");
+                               case2 = true;
                                    purchaseMode = true;
                                    stopPull();
                                    break;
@@ -163,11 +168,16 @@ var confirmingRequest = (function() {
                                  
                                    break;
                                case 5:
+                               
                                    stopPull();
                                    $("#loader").css("display", "none");
                                    $("#purchaseBtn").addClass("form-btn");
                                    $("#purchaseBtn").removeClass("cancel-btn");
                                    $("#purchaseBtn").html("ПОРЪЧАЙ");
+                                   localStorage.setItem("activeRequest", false);
+                                   if(!case2){
+                                       app.mobileApp.navigate("components/callTaxi/view.html");
+                                   }
                                    break;
                            }
                        }

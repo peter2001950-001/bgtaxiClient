@@ -2,6 +2,10 @@
 
 app.finishAddress = kendo.observable({
                                     onShow: function () {
+                                        if(localStorage.getItem("activeRequest") == true){
+                                            confirmingRequest.startPul();
+                                             app.mobileApp.navigate('components/confirmingRequest/view.html');
+                                        }
                                         document.addEventListener("backbutton", backFunction); 
                                         $(".my-location-btn").css("bottom", document.getElementsByClassName("address-form")[0].offsetHeight + 10 + "px");
                                         finishAddress.setMap();
@@ -34,7 +38,7 @@ document.addEventListener('touchmove', function (e) {
     e.preventDefault();
 }, false);
 
-document.addEventListener('DOMContentLoaded', loaded, false);
+document.addEventListener('DOMContentLoaded', loaded1, false);
 
 
 var finishAddress = (function() {
@@ -100,7 +104,8 @@ var finishAddress = (function() {
                                           zoom: 17,
                                           center: uluru,
                                           fullscreenControl: false,
-                                          mapTypeControl: false
+                                          mapTypeControl: false,
+                                          gestureHandling: "greedy"
                                       });  
     
             $('<div/>').addClass('centerMarker').appendTo(map.getDiv());
@@ -332,6 +337,10 @@ var finishAddress = (function() {
     function submit(){
         $("#wrapper").attr("id", "wrapper2");
         clearLocationInterval();
+        localStorage.setItem("finishAddressLat", placeLocation.lat);
+        localStorage.setItem("finishAddressLng", placeLocation.lng);
+       localStorage.setItem("finishAddressMainText", getChosenAddress().mainText);
+        localStorage.setItem("finishAddressSecondaryText", getChosenAddress().secondaryText);
        app.mobileApp.navigate('components/confirmingRequest/view.html');
         
     }
